@@ -1,26 +1,51 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <router-view />
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+<script>
+
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.btn-confirm {
+  padding: 6px 14px;
+  background-color: #00785A;
+  color: white;
+  border-radius: 6px; 
+  transition: background-color 0.2s ease-in-out;
+  margin-left: 4px;
 }
+
+.btn-confirm:hover {
+  background-color: #006747; 
+}
+
+
+.btn-cancel {
+  padding: 6px 14px;
+  background-color: #e5e7eb; /* bg-gray-200 */
+  color: black; /* text-gray-700 */
+  border-radius: 6px; /* rounded-md */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-cancel:hover {
+  background-color: #d1d5db; /* hover:bg-gray-300 */
+}
+
+.btn-delete {
+  padding: 6px 14px;
+  background-color: #b91c1c; /* bg-gray-200 */
+  color:  white; /* text-gray-700 */
+  border-radius: 6px; /* rounded-md */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-delete:hover{
+  background-color:#991b1b ; /* hover:bg-gray-300 */
+
+}
+
 </style>
