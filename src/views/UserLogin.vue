@@ -69,9 +69,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 import OlvidadoContraseña from './User/OlvidadoContraseña.vue';
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()
 export default {
@@ -89,7 +89,7 @@ export default {
   methods: {
     async handleLogin() {
       try {
-        const response = await axios.post('http://localhost:3000/usuarios/login', {
+        const response = await api.post('/usuarios/login', {
           email: this.email,
           contraseña: this.password,
         });
