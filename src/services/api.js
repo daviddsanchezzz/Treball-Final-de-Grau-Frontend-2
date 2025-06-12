@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/', // ajusta según tu backend
+  baseURL: 'https://tfg-backend-xu86.onrender.com', // tu URL de Render
 })
 
 export default api
