@@ -99,10 +99,12 @@
 
 
 <script>
-import axios from 'axios'
 import HeaderComp from '@/components/HeaderComp.vue'
 import EvaluarTutor from './User/EvaluarTutor.vue'
 import EvaluarEvaluador from './User/EvaluarEvaluador.vue'
+import api from '@/services/api'
+
+
 
 export default {
   name: 'MisTrabajos',
@@ -138,7 +140,7 @@ export default {
   methods: {
     async obtenerTrabajos() {
       try {
-        const response = await axios.get(`http://localhost:3000/usuarios/${this.usuarioId}/trabajos`)
+        const response = await api.get(`/usuarios/${this.usuarioId}/trabajos`)
         let trabajos = response.data;
 
         // Definimos el orden para los estados y los roles

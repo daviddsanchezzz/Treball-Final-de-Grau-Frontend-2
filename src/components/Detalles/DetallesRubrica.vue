@@ -111,11 +111,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import CrearCriterio from "../crear/CrearCriterio.vue";
 import editarCriterio from "../editar/editarCriteri.vue";
 import editarPuntoControl from "../editar/editarPuntoControl.vue";
 import { useI18n } from 'vue-i18n'
+import api from '@/services/api'
 
 
 
@@ -143,7 +143,7 @@ export default {
       try {
         console.log(this.rubricaId)
         // Obtener criterios y rubrica
-        const res = await axios.get(`http://localhost:3000/criterios/${this.rubricaId}/puntoControl`);
+        const res = await api.get(`/criterios/${this.rubricaId}/puntoControl`);
         this.rubrica = res.data.rubrica;
         this.criterios = res.data.criterios;
 
@@ -151,7 +151,7 @@ export default {
 
 
         // Obtener puntos de control desde el nuevo endpoint
-        const puntosRes = await axios.get(`http://localhost:3000/rubricas/${this.rubricaId}/puntosDeControl`);
+        const puntosRes = await api.get(`/rubricas/${this.rubricaId}/puntosDeControl`);
         this.puntosDeControl = puntosRes.data.map((punto) => ({
           puntoControlId: punto.id,
           puntoControlNombre: punto.nombre,

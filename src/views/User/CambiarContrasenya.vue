@@ -59,6 +59,7 @@
   
   <script>
   import { useToast } from 'vue-toastification'
+  import api from '@/services/api'
 
   const toast = useToast()
   
@@ -83,7 +84,7 @@
                 const token = localStorage.getItem('token');
                 const userId = localStorage.getItem('usuarioId');
 
-                const response = await fetch(`http://localhost:3000/usuarios/${userId}/editar-contrasenya`, {
+                const response = await api.fetch(`/usuarios/${userId}/editar-contrasenya`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

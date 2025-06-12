@@ -223,10 +223,10 @@
   </template>
   
   <script>
-  import axios from 'axios';
   import { useToast } from 'vue-toastification'
   import html2pdf from 'html2pdf.js';
   import { useI18n } from 'vue-i18n'
+  import api from '@/services/api'
 
 
   const toast = useToast()
@@ -293,23 +293,23 @@
         return 'D';
       },
       async cargarEvaluadores(){
-        const datosRes = await axios.get(`http://localhost:3000/rubricaEvaluador/${this.trabajo.id}`);
+        const datosRes = await api.get(`/rubricaEvaluador/${this.trabajo.id}`);
         this.rubricaEvaluadoresId = datosRes.data.rubricaId;
 
-        const porcentajesRes =  await axios.get(`http://localhost:3000/areas/porcentagesTrabajo/${this.trabajo.id}`);
+        const porcentajesRes =  await api.get(`/areas/porcentagesTrabajo/${this.trabajo.id}`);
         this.percentatgeFinalTutor = porcentajesRes.data.percentatgeFinalTutor;
         this.percentatgeFinalAvaluadors = porcentajesRes.data.percentatgeFinalAvaluadors;
 
 
-        const rubricaRes = await axios.get(`http://localhost:3000/criterios/${this.rubricaEvaluadoresId}/puntoControl`);
+        const rubricaRes = await api.get(`/criterios/${this.rubricaEvaluadoresId}/puntoControl`);
         this.rubricaEvaluadores = rubricaRes.data.rubrica;
         this.criteriosEvaluadores = rubricaRes.data.criterios;
         this.criteriosEvaluadores.sort((a, b) => a.criterioId - b.criterioId);
 
-        const puntosRes = await axios.get(`http://localhost:3000/rubricas/${this.rubricaEvaluadoresId}/puntosDeControl`);
+        const puntosRes = await api.get(`/rubricas/${this.rubricaEvaluadoresId}/puntosDeControl`);
         this.puntosDeControlEvaluadores = puntosRes.data;    
         
-        const evaluadores = await axios.get(`http://localhost:3000/evaluaciones/evaluadores/${this.trabajo.id}`);
+        const evaluadores = await api.get(`/evaluaciones/evaluadores/${this.trabajo.id}`);
         this.evaluadores=evaluadores.data
 
         let suma = 0;
@@ -375,7 +375,7 @@
       },
       async guardarEvaluacionFinal(){
         try {
-          const response = await axios.put(`http://localhost:3000/trabajos/actualizarNotas/${this.trabajo.id}`,{
+          const response = await api.put(`/trabajos/actualizarNotas/${this.trabajo.id}`,{
             notaMediaEvaluadores: this.notaFinalEvaluadores, 
             notaFinalTutor: this.localNotaFinal, 
             notaFinalTrabajo: this.notaFinalTrabajo

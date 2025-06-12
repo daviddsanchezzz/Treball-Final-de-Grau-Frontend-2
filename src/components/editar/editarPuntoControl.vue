@@ -40,8 +40,8 @@
   </template>
   
   <script>
-  import axios from 'axios';
   import { useToast } from 'vue-toastification'
+  import api from '@/services/api'
 
   const toast = useToast()
   export default {
@@ -60,7 +60,7 @@
     methods: {
       async guardarCambios() {
         try {
-          await axios.put(`http://localhost:3000/puntos-de-control/${this.punto.puntoControlId}`, {
+          await api.put(`/puntos-de-control/${this.punto.puntoControlId}`, {
             nombre: this.nombre,
             peso: this.peso,
           });

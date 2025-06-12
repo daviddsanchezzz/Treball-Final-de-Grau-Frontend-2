@@ -169,11 +169,11 @@
 </template>
 
 <script>
-import axios from 'axios';
 import EvaluarTrabajo from '../../components/EvaluarTrabajo.vue';
 import editarNotaFinal from '../../components/editar/editarNotaFinal.vue';
 import ResumenDefensa from './ResumenDefensa.vue';
 import { useI18n } from 'vue-i18n'
+import api from '@/services/api'
 
 import { useToast } from 'vue-toastification'
 
@@ -211,17 +211,17 @@ export default {
     async cargarDatos() {
       try {
         // Obtener detalles del trabajo
-        const trabajoRes = await axios.get(`http://localhost:3000/trabajos/${this.trabajoId}`);
+        const trabajoRes = await api.get(`/trabajos/${this.trabajoId}`);
         this.trabajo = trabajoRes.data;
         console.log(this.trabajo)
 
         // Obtener rubricaId desde backend
-        const datosRes = await axios.get(`http://localhost:3000/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos`);
+        const datosRes = await api.get(`/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos`);
         this.rubricaId = datosRes.data.rubricaId;
         this.rol = datosRes.data.rolNombre;
 
         // Obtener criterios y puntos de control usando rubricaId
-        const rubricaRes = await axios.get(`http://localhost:3000/criterios/${this.rubricaId}/puntoControl`);
+        const rubricaRes = await api.get(`/criterios/${this.rubricaId}/puntoControl`);
         this.rubrica = rubricaRes.data.rubrica;
         this.criterios = rubricaRes.data.criterios;
         this.criterios.sort((a, b) => a.criterioId - b.criterioId);
@@ -265,7 +265,7 @@ export default {
         this.puntosDeControl = Object.values(puntosUnicos);
 
         
-        const evaluacionesRes = await axios.get(`http://localhost:3000/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor`);
+        const evaluacionesRes = await api.get(`/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor`);
 
         // Inicializar la variable this.notas
         this.notas = {}; // Inicializar la estructura de notas vacía
@@ -317,7 +317,7 @@ export default {
               const nota = criteriosNotas[criterioId];
 
               // Llamada al backend para cada nota
-              await axios.post('http://localhost:3000/notasTutor', {
+              await api.post('/notasTutor', {
                 criterioId: parseInt(criterioId),
                 puntoControlId: parseInt(puntoControlId),
                 profesorId: this.usuarioId,
@@ -327,7 +327,7 @@ export default {
             }
 
             // 🔽 Guardar la nota final y observación del punto de control
-            const response = await axios.post('http://localhost:3000/evaluaciones/tutor', {
+            const response = await api.post('/evaluaciones/tutor', {
               trabajoId: this.trabajoId,         
               puntoControlId: puntoControlId,    
               notaFinalPC: notaFinalPC,         
@@ -348,7 +348,7 @@ export default {
     },
     async guardarNotaFinal(nota){
       try {
-        const response = await axios.put(`http://localhost:3000/trabajos/editarNotaTutor/${this.trabajoId}`, {
+        const response = await api.put(`/trabajos/editarNotaTutor/${this.trabajoId}`, {
           nota: nota
         });
 
@@ -364,7 +364,7 @@ export default {
     },
     async restaurarNotaFinal(){
       try {
-        const response = await axios.put(`http://localhost:3000/trabajos/resetearNotaTutor/${this.trabajoId}`);
+        const response = await api.put(`/trabajos/resetearNotaTutor/${this.trabajoId}`);
 
         this.notaFinalDefensa=null;
         console.log('Nota final del tutor reseteada:', response.data);
@@ -421,7 +421,7 @@ export default {
     async cambiarEstadoTrabajo(nuevoEstado) {
       try {
         // Enviar la solicitud para cambiar el estado del trabajo
-        const response = await axios.put(`http://localhost:3000/trabajos/${this.trabajoId}/estados`, {
+        const response = await api.put(`/trabajos/${this.trabajoId}/estados`, {
           nuevoEstado: nuevoEstado
         });
 
@@ -436,7 +436,7 @@ export default {
     // Ejemplo de llamada en el frontend con Axios
     async  obtenerNotaFinalTutor() {
       try {
-        const response = await axios.get(`http://localhost:3000/trabajos/nota-final-tutor/${this.trabajoId}`);
+        const response = await api.get(`/trabajos/nota-final-tutor/${this.trabajoId}`);
         
         if(response.data.notaFinalTutor != null){
           this.notaFinalDefensa = response.data.notaFinalTutor

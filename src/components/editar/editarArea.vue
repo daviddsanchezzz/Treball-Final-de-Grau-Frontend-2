@@ -72,6 +72,7 @@
   
   <script>
   import { useToast } from 'vue-toastification'
+  import api from '@/services/api'
 
   const toast = useToast()  
   export default {
@@ -104,7 +105,7 @@
         }
         else{
           try {
-            const response = await fetch(`http://localhost:3000/areas/${this.areaId}/editar`, {
+            const response = await api.fetch(`/areas/${this.areaId}/editar`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
@@ -134,7 +135,7 @@
       },
       async obtenerDatos() {
         try {
-          const response = await fetch(`http://localhost:3000/areas/porcentages/${this.areaId}`);
+          const response = await api.fetch(`/areas/porcentages/${this.areaId}`);
           if (!response.ok) {
             throw new Error('Error al obtener los porcentajes del área');
           }

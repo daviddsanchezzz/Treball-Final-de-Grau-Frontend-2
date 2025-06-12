@@ -38,8 +38,8 @@
   
   <script>
   import { ref, onMounted } from 'vue'
-  import axios from 'axios'
   import { useToast } from 'vue-toastification'
+  import api from '@/services/api'
 
   const toast = useToast()
   export default {
@@ -62,7 +62,7 @@
   
       const obtenerRubrica = async () => {
         try {
-          const res = await axios.get(`http://localhost:3000/rubricas/${props.rubricaId}`)
+          const res = await api.get(`/rubricas/${props.rubricaId}`)
           const rubricaData = res.data
           
           // Filtrar solo los datos necesarios
@@ -82,7 +82,7 @@
   
       const obtenerRoles = async () => {
         try {
-          const res = await axios.get('http://localhost:3000/roles')
+          const res = await api.get('/roles')
           roles.value = res.data
         } catch (error) {
           console.error('Error al obtener roles', error)
@@ -95,7 +95,7 @@
        
 
           // Enviar solo la cantidad de puntos de control junto con el resto de los datos
-          await axios.put(`http://localhost:3000/rubricas/${props.rubricaId}`, {
+          await api.put(`/rubricas/${props.rubricaId}`, {
             nombre,
             rolId: rol.id,  // Pasar el ID del rol
           })

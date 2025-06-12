@@ -68,8 +68,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()  
 
@@ -91,7 +91,7 @@ export default {
       }
       else{
         try {
-          const response = await axios.post('http://localhost:3000/areas', {
+          const response = await api.post('/areas', {
             nombre: this.nombre,
             tutor: this.percentatgeTutor,
             avaluador: this.percentatgeAvaluadors,

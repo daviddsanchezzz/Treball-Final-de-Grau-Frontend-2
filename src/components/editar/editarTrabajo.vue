@@ -93,8 +93,8 @@
   <script>
   import Multiselect from 'vue-multiselect'
   import 'vue-multiselect/dist/vue-multiselect.min.css'
-  import axios from 'axios'
   import { useToast } from 'vue-toastification'
+  import api from '@/services/api'
 
   const toast = useToast()  
   export default {
@@ -126,8 +126,8 @@
       async cargarDatos() {
         try {
           const [resTutores, resAreas] = await Promise.all([
-            axios.get('http://localhost:3000/usuarios'),
-            axios.get('http://localhost:3000/areas')
+            api.get('/usuarios'),
+            api.get('/areas')
           ])
           this.tutores = resTutores.data
           this.areas = resAreas.data
@@ -144,7 +144,7 @@
           const tutorId = this.form.tutor?.id || null
           const areaId = this.form.area?.id || null
   
-          await axios.put(`http://localhost:3000/trabajos/${this.trabajo.id}`, {
+          await api.put(`/trabajos/${this.trabajo.id}`, {
             titulo: this.form.titulo,
             estudiante: this.form.estudiante,
             descripcion: this.form.descripcion,

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import api from '@/services/api'
 
 export default {
   props: {
@@ -81,7 +81,7 @@ export default {
     },
     async obtenerNombreTutor() {
       try {
-        const tutorRes = await axios.get(`http://localhost:3000/usuarios/${this.tutorId}`);
+        const tutorRes = await api.get(`/usuarios/${this.tutorId}`);
         this.nombreTutor = tutorRes.data.nombre;
       } catch (error) {
         console.error("Error al cargar datos de tutor:", error);

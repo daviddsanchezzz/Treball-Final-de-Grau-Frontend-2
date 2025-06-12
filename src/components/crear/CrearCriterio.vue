@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()  
 
@@ -91,7 +91,7 @@ export default {
   methods: {
     async crearCriterio() {
       try {
-        await axios.post('http://localhost:3000/criterios', {
+        await api.post('/criterios', {
           nombre: this.nombre,
           nombreEs: this.nombreEs,
           nombreEn: this.nombreEn,

@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()
 
@@ -79,7 +79,7 @@ export default {
   methods: {
     async crearUsuario() {
       try {
-        const response = await axios.post('http://localhost:3000/usuarios', {
+        const response = await api.post('/usuarios', {
           nombre: this.nombre,
           email: this.email,
           contraseña: this.contraseña,

@@ -83,9 +83,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 import ConfirmacionEliminacion from '../ConfirmacionEliminacion.vue'; // Asegúrate de importar el componente
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()
 
@@ -108,7 +108,7 @@ export default {
   methods: {
     async guardarCambios() {
       try {
-        await axios.put(`http://localhost:3000/criterios/${this.criterio.criterioId}`, {
+        await api.put(`/criterios/${this.criterio.criterioId}`, {
           nuevoNombre: this.nombre,
           nuevoNombreEs: this.nombreEs,
           nuevoNombreEn: this.nombreEn,
@@ -135,7 +135,7 @@ export default {
     // Elimina el criterio si se confirma
     async eliminarCriterio() {
       try {
-        await axios.delete(`http://localhost:3000/criterios/${this.criterio.criterioId}`);
+        await api.delete(`/criterios/${this.criterio.criterioId}`);
         this.$emit('cerrar');
         toast.success('Criteri eliminat correctament')
       } catch (error) {

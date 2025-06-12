@@ -54,8 +54,8 @@
   </template>
   
   <script>
-  import axios from 'axios'
   import { useToast } from 'vue-toastification'
+  import api from '@/services/api'
 
   const toast = useToast()
   export default {
@@ -90,7 +90,7 @@
     methods: {
       async actualizarUsuario() {
         try {
-          await axios.put(`http://localhost:3000/usuarios/${this.usuario.id}`, {
+          await api.put(`/usuarios/${this.usuario.id}`, {
             nombre: this.form.nombre,
             email: this.form.email,
             esAdmin: this.form.esAdmin

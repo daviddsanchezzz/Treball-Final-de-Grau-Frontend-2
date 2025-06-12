@@ -55,8 +55,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()  
 
@@ -75,7 +75,7 @@ export default {
   methods: {
     async obtenerRoles() {
       try {
-        const response = await axios.get('http://localhost:3000/roles');
+        const response = await api.get('/roles');
         this.roles = response.data;
         if (this.roles.length > 0) {
           this.rolId = this.roles[0].id; // seleccionar el primero por defecto
@@ -86,7 +86,7 @@ export default {
     },
     async submitRubrica() {
       try {
-        await axios.post('http://localhost:3000/rubricas', {
+        await api.post('/rubricas', {
           nombre: this.nombre,
           rolId: this.rolId,
           numPuntosDeControl: this.numPuntosDeControl,

@@ -90,13 +90,14 @@
 
 <script setup>
 import { ref, onMounted, computed, nextTick } from 'vue'
-import axios from 'axios'
 import CrearTrabajo from '../../components/crear/crearTrabajo.vue'
 import ConfirmacionEliminacion from '../../components/ConfirmacionEliminacion.vue'
 import DetallesTrabajo from '../../components/Detalles/DetallesTrabajo.vue'
 import editarTrabajo from '../../components/editar/editarTrabajo.vue'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
+import api from '@/services/api'
+
 const { t } = useI18n()
 
 const toast = useToast()
@@ -111,7 +112,7 @@ const searchQuery = ref('')
 
 const obtenerTrabajos = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/trabajos')
+    const res = await api.get('/trabajos')
     trabajos.value = res.data
   } catch (error) {
     console.error('Error al obtener trabajos', error)
@@ -141,7 +142,7 @@ const cancelarEliminacion = () => {
 const eliminarTrabajo = async () => {
   console.log(trabajoAEliminar.value)
   try {
-    await axios.delete(`http://localhost:3000/trabajos/${trabajoAEliminar.value}`)
+    await api.delete(`/trabajos/${trabajoAEliminar.value}`)
     obtenerTrabajos()
     cancelarEliminacion()
     toast.success('Treball eliminat correctament')

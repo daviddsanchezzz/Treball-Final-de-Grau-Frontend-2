@@ -88,10 +88,10 @@
 
 <script setup>
 import { ref, onMounted, nextTick, computed } from 'vue'
-import axios from 'axios'
 import CrearUsuario from '../../components/crear/crearUsuario.vue'
 import EditarUsuario from '../../components/editar/editarUsuario.vue'
 import ConfirmacionEliminacion from '../../components/ConfirmacionEliminacion.vue'
+import api from '@/services/api'
 
 const usuarios = ref([])
 const mostrarCrear = ref(false)
@@ -107,7 +107,7 @@ const toast = useToast()
 // Obtener lista de usuarios
 const obtenerUsuarios = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/usuarios')
+    const res = await api.get('/usuarios')
     usuarios.value = res.data
   } catch (error) {
     console.error('Error al obtener usuarios', error)
@@ -158,7 +158,7 @@ const cancelarEliminacion = () => {
 
 const eliminarUsuario = async () => {
   try {
-    await axios.delete(`http://localhost:3000/usuarios/${usuarioAEliminar.value}`)
+    await api.delete(`/usuarios/${usuarioAEliminar.value}`)
     obtenerUsuarios()
     cancelarEliminacion()
     toast.success('Usuari eliminat correctament')

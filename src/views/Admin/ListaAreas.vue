@@ -68,12 +68,12 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
 import CrearArea from '../../components/crear/crearArea.vue'
 import ConfirmacionEliminacion from '../../components/ConfirmacionEliminacion.vue'
 import DetallesArea from '../../components/Detalles/DetallesArea.vue'
 import EditarArea from '../../components/editar/editarArea.vue'
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()
 const areas = ref([]) // Lista de áreas
@@ -90,7 +90,7 @@ const searchQuery = ref('') // Valor del input de búsqueda
 // Obtener la lista de áreas desde la API
 const obtenerAreas = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/areas')
+    const res = await api.get('/areas')
     // Ordenar las áreas alfabéticamente por nombre
     areas.value = res.data.sort((a, b) => a.nombre.localeCompare(b.nombre))
   } catch (error) {
@@ -118,7 +118,7 @@ const cancelarEliminacion = () => {
 // Eliminar un área
 const eliminarArea = async () => {
   try {
-    await axios.delete(`http://localhost:3000/areas/${areaAEliminar.value}`)
+    await api.delete(`/areas/${areaAEliminar.value}`)
     obtenerAreas() // Volver a cargar las áreas después de eliminar
     toast.success(`Área eliminada correctament`)
     cancelarEliminacion()

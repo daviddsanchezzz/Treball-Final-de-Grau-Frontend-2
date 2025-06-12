@@ -101,10 +101,10 @@
 </template>
 
 <script>
-import axios from 'axios';
 import EvaluarTrabajo from '../../components/EvaluarTrabajo.vue';
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
+import api from '@/services/api'
 
 const toast = useToast()
 
@@ -133,21 +133,21 @@ export default {
     async cargarDatos() {
       try {
         // 1. Obtener detalles del trabajo
-        const trabajoRes = await axios.get(`http://localhost:3000/trabajos/${this.trabajoId}`);
+        const trabajoRes = await api.get(`/trabajos/${this.trabajoId}`);
         this.trabajo = trabajoRes.data;
 
         // 2. Obtener rubricaId desde backend
-        const datosRes = await axios.get(`http://localhost:3000/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos`);
+        const datosRes = await api.get(`/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos`);
         this.rubricaId = datosRes.data.rubricaId;
         this.rol = datosRes.data.rolNombre;
 
         // 3. Obtener criterios y puntos de control usando rubricaId
-        const rubricaRes = await axios.get(`http://localhost:3000/criterios/${this.rubricaId}/puntoControl`);
+        const rubricaRes = await api.get(`/criterios/${this.rubricaId}/puntoControl`);
         this.rubrica = rubricaRes.data.rubrica;
         this.criterios = rubricaRes.data.criterios;
         this.criterios.sort((a, b) => a.criterioId - b.criterioId);
 
-        const puntosRes = await axios.get(`http://localhost:3000/rubricas/${this.rubricaId}/puntosDeControl`);
+        const puntosRes = await api.get(`/rubricas/${this.rubricaId}/puntosDeControl`);
         this.puntosDeControl = puntosRes.data;
 
         this.criterios.forEach(criterio => {
@@ -171,7 +171,7 @@ export default {
     async cargarEvaluacionYNotas(trabajoId, evaluadorId) {
       try {
         // Buscar la evaluación y todas las notas asociadas al trabajo y evaluador
-        const evaluacionConNotas = await axios.get(`http://localhost:3000/evaluaciones/${trabajoId}/evaluador/${evaluadorId}`);
+        const evaluacionConNotas = await api.get(`/evaluaciones/${trabajoId}/evaluador/${evaluadorId}`);
 
         if (evaluacionConNotas.data) {
           return evaluacionConNotas.data;  // Devuelves la evaluación y las notas asociadas
@@ -197,7 +197,7 @@ export default {
         const notasPromises = Object.keys(this.notas).map(async (criterioId) => {
         const notaObj = this.notas[criterioId];
         if (notaObj && notaObj.nota !== null && notaObj.nota !== '') {
-          await axios.post('http://localhost:3000/notasEvaluador', {
+          await api.post('/notasEvaluador', {
             criterioId: parseInt(criterioId),
             profesorId: parseInt(this.usuarioId),
             trabajoId: parseInt(this.trabajo.id),
@@ -216,7 +216,7 @@ export default {
           notaFinal: parseFloat(this.notaFinal),
         };
 
-        const response = await axios.post('http://localhost:3000/evaluaciones/evaluador', evaluacionData);
+        const response = await api.post('/evaluaciones/evaluador', evaluacionData);
         if (response.status === 201 || response.status === 200) {
           toast.success('Evaluació guardada correctament')
         }

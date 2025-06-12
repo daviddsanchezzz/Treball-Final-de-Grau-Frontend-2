@@ -75,12 +75,12 @@
 
 <script>
 import { nextTick } from 'vue'
-import axios from 'axios'
 import CrearRubrica from '../../components/crear/crearRubrica.vue'
 import ConfirmacionEliminacion from '../../components/ConfirmacionEliminacion.vue'
 import EditarRubrica from '../../components/editar/editarRubrica.vue'
 import DetallesRubrica from '../../components/Detalles/DetallesRubrica.vue'
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()
 export default {
@@ -114,7 +114,7 @@ export default {
   methods: {
     async obtenerRubricas() {
       try {
-        const res = await axios.get('http://localhost:3000/rubricas')
+        const res = await api.get('/rubricas')
         this.rubricas = res.data
       } catch (error) {
         console.error('Error al obtener rúbricas', error)
@@ -138,7 +138,7 @@ export default {
     },
     async eliminarRubrica() {
       try {
-        await axios.delete(`http://localhost:3000/rubricas/${this.rubricaAEliminar}`)
+        await api.delete(`/rubricas/${this.rubricaAEliminar}`)
         this.obtenerRubricas()
         this.cancelarEliminacion()
         toast.success(this.$t('rubricaEliminadaCorrecta'))

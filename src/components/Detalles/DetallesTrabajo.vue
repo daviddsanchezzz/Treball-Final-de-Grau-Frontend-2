@@ -91,11 +91,11 @@
 </template>
 
 <script>
-import axios from 'axios';
 import ConfirmacionEliminacion from '../ConfirmacionEliminacion.vue';
 import { useToast } from 'vue-toastification'
 
 const toast = useToast()
+import api from '@/services/api'
 
 export default {
   name: 'DetallesTrabajo',
@@ -131,7 +131,7 @@ export default {
     async obtenerEvaluadores() {
       if (this.trabajo.id) {
         try {
-          const response = await axios.get(`http://localhost:3000/trabajos/${this.trabajo.id}/evaluadores`);
+          const response = await api.get(`/trabajos/${this.trabajo.id}/evaluadores`);
           this.evaluadores = response.data.evaluadores || [];
         } catch (error) {
           console.error('Error al obtener los evaluadores', error);
@@ -149,7 +149,7 @@ export default {
 
     async obtenerEvaluadoresDisponibles() {
       try {
-        const response = await axios.get('http://localhost:3000/usuarios');
+        const response = await api.get('/usuarios');
         this.evaluadoresDisponibles = response.data.filter(usuario =>
           !this.evaluadores.some(evaluador => evaluador.id === usuario.id)
         );
@@ -173,7 +173,7 @@ export default {
     async añadirEvaluador() {
       if (this.evaluadorSeleccionado) {
         try {
-          await axios.post(`http://localhost:3000/trabajos/asignarEvaluador`, {
+          await api.post(`/trabajos/asignarEvaluador`, {
             usuarioId: this.evaluadorSeleccionado.id,
             trabajoId: this.trabajo.id,
           });
@@ -199,7 +199,7 @@ export default {
 
     async eliminarEvaluador() {
       try {
-        await axios.delete(`http://localhost:3000/trabajos/${this.trabajo.id}/evaluador/${this.eliminarId}`);
+        await api.delete(`/trabajos/${this.trabajo.id}/evaluador/${this.eliminarId}`);
         await this.obtenerEvaluadores();
         this.confirmacionVisible = false;
       } catch (error) {
@@ -216,14 +216,14 @@ export default {
     async obtenerTutorYArea() {
       try {
         if (this.trabajo.tutorId) {
-          const tutorResponse = await axios.get(`http://localhost:3000/usuarios/${this.trabajo.tutorId}`);
+          const tutorResponse = await api.get(`/usuarios/${this.trabajo.tutorId}`);
           this.tutorNombre = tutorResponse.data.nombre;
         } else {
           this.tutorNombre = 'No assignat';
         }
 
         if (this.trabajo.areaId) {
-          const areaResponse = await axios.get(`http://localhost:3000/areas/${this.trabajo.areaId}`);
+          const areaResponse = await api.get(`/areas/${this.trabajo.areaId}`);
           this.areaNombre = areaResponse.data.area;
 
         } else {

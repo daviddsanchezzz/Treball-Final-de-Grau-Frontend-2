@@ -104,9 +104,9 @@
 
 
 <script>
-import axios from 'axios';
 import ConfirmacionEliminacion from '../ConfirmacionEliminacion.vue';  // Asegúrate de importar el componente de confirmación
 import { useToast } from 'vue-toastification'
+import api from '@/services/api'
 
 const toast = useToast()
 export default {
@@ -142,7 +142,7 @@ export default {
   methods: {
     async obtenerDetallesArea() {
       try {
-        const response = await axios.get(`http://localhost:3000/areas/${this.areaId}`);
+        const response = await api.get(`/areas/${this.areaId}`);
         this.area = response.data;
       } catch (error) {
         console.error('Error al obtener los detalles del área:', error);
@@ -162,7 +162,7 @@ export default {
 
     async eliminarRubrica() {
       try {
-        await axios.delete(`http://localhost:3000/rubricas/desasignar`, {
+        await api.delete(`/rubricas/desasignar`, {
           data: {
             areaId: this.areaId,
             rubricaId: this.rubricaIdAEliminar
@@ -177,7 +177,7 @@ export default {
     },
     async obtenerRubricasDisponibles() {
       try {
-        const response = await axios.get(`http://localhost:3000/rubricas`);
+        const response = await api.get(`/rubricas`);
         this.rubricasDisponibles = response.data;
       } catch (error) {
         console.error('Error al obtener rúbricas disponibles:', error);
@@ -197,7 +197,7 @@ export default {
       if (!this.rubricaSeleccionada) return;
 
       try {
-        await axios.post(`http://localhost:3000/rubricas/asignar`, {
+        await api.post(`/rubricas/asignar`, {
           areaId: this.areaId,
           rubricaId: this.rubricaSeleccionada.id
         });
