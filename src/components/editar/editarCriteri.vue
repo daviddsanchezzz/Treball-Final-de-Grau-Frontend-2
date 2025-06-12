@@ -4,13 +4,35 @@
     <form @submit.prevent="guardarCambios">
       <!-- Nombre del criterio -->
       <div class="mt-4">
-        <label for="nombre" class="block text-sm font-semibold text-gray-700">Nom del Criteri</label>
+        <label for="nombre" class="block text-sm font-semibold text-gray-700">{{$t('crearCriterioNombreCriterio')}}
+          <span class="text-red-500 ml-1">*</span>
+        </label>
         <input
           v-model="nombre"
           type="text"
           id="nombre"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
           required
+        />
+      </div>
+
+      <div class="mt-4">
+        <label for="nombreEs" class="block text-sm font-semibold text-gray-700">{{$t('crearCriterioNombreCriterioEs')}}</label>
+        <input
+          v-model="nombreEs"
+          type="text"
+          id="nombreEs"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+
+      <div class="mt-4">
+        <label for="nombreEn" class="block text-sm font-semibold text-gray-700">{{$t('crearCriterioNombreCriterioEn')}}</label>
+        <input
+          v-model="nombreEn"
+          type="text"
+          id="nombreEn"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
         />
       </div>
 
@@ -63,6 +85,9 @@
 <script>
 import axios from 'axios';
 import ConfirmacionEliminacion from '../ConfirmacionEliminacion.vue'; // Asegúrate de importar el componente
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 export default {
   components: {
@@ -74,6 +99,8 @@ export default {
   data() {
     return {
       nombre: this.criterio.criterioNombre,
+      nombreEs: this.criterio.criterioNombreEs,
+      nombreEn: this.criterio.criterioNombreEn,
       pesosPuntosControl: {},
       mostrarConfirmacion: false, // Estado para mostrar el componente de confirmación
     };
@@ -83,11 +110,15 @@ export default {
       try {
         await axios.put(`http://localhost:3000/criterios/${this.criterio.criterioId}`, {
           nuevoNombre: this.nombre,
+          nuevoNombreEs: this.nombreEs,
+          nuevoNombreEn: this.nombreEn,
           nuevosPesosPuntosControl: this.pesosPuntosControl,
         });
         this.$emit('cerrar');
+        toast.success('Criteri actualitzat correctament')
       } catch (error) {
         console.error('Error al guardar los cambios del criteri:', error);
+        toast.error('Error al actualizar el criteri')
       }
     },
 
@@ -105,9 +136,11 @@ export default {
     async eliminarCriterio() {
       try {
         await axios.delete(`http://localhost:3000/criterios/${this.criterio.criterioId}`);
-        this.$emit('cerrar'); // o podrías emitir otro evento como 'criterioEliminado'
+        this.$emit('cerrar');
+        toast.success('Criteri eliminat correctament')
       } catch (error) {
         console.error('Error al eliminar el criteri:', error);
+        toast.error('Error al eliminar el criteri')
       } finally {
         this.mostrarConfirmacion = false;
       }

@@ -39,7 +39,9 @@
   <script>
   import { ref, onMounted } from 'vue'
   import axios from 'axios'
-  
+  import { useToast } from 'vue-toastification'
+
+  const toast = useToast()
   export default {
     props: {
       rubricaId: {
@@ -97,10 +99,11 @@
             nombre,
             rolId: rol.id,  // Pasar el ID del rol
           })
-          alert('Rúbrica actualizada correctamente')
+          toast.success('Rúbrica actualitzada correctament')
           emit('rubricaActualizada')
         } catch (error) {
           console.error('Error al actualizar la rúbrica', error)
+          toast.error('Error al actualitzar la rúbrica')
         }
       }
   

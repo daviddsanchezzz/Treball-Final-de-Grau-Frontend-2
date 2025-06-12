@@ -1,9 +1,9 @@
 <template>
   <div class="space-y-4 mx-auto mt-8 p-6 bg-white rounded-xl shadow-md">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Crear Treball</h2>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{$t('crearTreball')}}</h2>
     <form @submit.prevent="crearTrabajo">
       <div class="mb-4">
-        <label class="block text-gray-700">Títol</label>
+        <label class="block text-gray-700">{{$t('titulo')}}</label>
         <input
           v-model="titulo"
           type="text"
@@ -13,7 +13,7 @@
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700">Descripció</label>
+        <label class="block text-gray-700">{{$t('descripcion')}}</label>
         <textarea
           v-model="descripcion"
           class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -22,7 +22,7 @@
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700">Estudiant</label>
+        <label class="block text-gray-700">{{$t('estudiante')}}</label>
         <input
           v-model="estudiante"
           type="text"
@@ -32,25 +32,25 @@
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700">Tutor</label>
+        <label class="block text-gray-700">{{$t('tutor')}}</label>
         <multiselect
           v-model="tutorId"
           :options="tutores"
           track-by="id"
           label="nombre"
-          placeholder="Selecciona un tutor"
+          :placeholder="$t('seleccionarTutor')"
           required
         ></multiselect>
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700">Àrea</label>
+        <label class="block text-gray-700">{{$t('area')}}</label>
         <multiselect
           v-model="areaId"
           :options="areas"
           track-by="id"
           label="nombre"
-          placeholder="Selecciona un área"
+          :placeholder="$t('seleccionarArea')"
           required
         ></multiselect>
       </div>
@@ -60,13 +60,13 @@
           class="btn-cancel"
           @click="cancelarCrear()"
         >
-          Cancel·lar
+          {{ $t('cancel') }}
         </button>
         <button
           type="submit"
           class="btn-confirm"
         >
-          Crear Treball
+          {{ $t('crearTreball') }}
         </button>
       </div>
     </form>
@@ -77,7 +77,9 @@
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 import axios from 'axios';
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()  
 
 export default {
   components: {
@@ -125,22 +127,21 @@ export default {
           areaId: areaId
         });
 
-        this.$emit('trabajoCreado')
         this.titulo = '';
         this.descripcion = '';
         this.estudiante = '';
         this.tutorId = '';
         this.areaId = '';
+        this.$emit('trabajoCreado')
+        toast.success(this.$t('trabajoCreadoCorrectamente'))
       } catch (error) {
         console.error(error);
-        alert(error.response?.data?.error || 'Error al crear trabajo');
+        toast.error(this.$t('errorCrearTrabajo'));
       }
     },
     cancelarCrear(){
       this.$emit('cancelar')
     }
-
-    
   }
 };
 </script>

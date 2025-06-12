@@ -13,7 +13,7 @@
       <p>Rol: {{ rubrica.rol.nombre }}</p>
     </div>
 
-    <div v-if="criterios.length && !mostrarFormulario && !mostrarEditarCriterio && !mostrarEditarPunto">
+    <div v-if=" !mostrarFormulario && !mostrarEditarCriterio && !mostrarEditarPunto">
       <h3 class="mt-4 text-lg font-semibold">Criteris i Punts de Control</h3>
       <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-300 mt-4">
@@ -22,7 +22,7 @@
               <th class="border px-4 py-2" colspan="2">Criteris</th>
               <template v-if="puntosDeControl.length > 1">
                 <th v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="border px-4 py-2">
-                  {{ punto.puntoControlNombre }} <br />
+                  {{ punto.puntoControlNombre}} <br />
                   <button
                     @click="editarPuntoControl(punto)"
                     class="text-gray-700 text-xs font-semibold py-1 px-2 rounded hover:text-black transition duration-200"
@@ -46,7 +46,7 @@
                 </button>
               </td>
               <td class="border px-4 py-2 text-xs">
-                {{ criterio.criterioNombre }}
+                {{ getNombreCriterio(criterio) }}
                 <div class="flex justify-center mt-2">
                 </div>
               </td>
@@ -115,6 +115,8 @@ import axios from "axios";
 import CrearCriterio from "../crear/CrearCriterio.vue";
 import editarCriterio from "../editar/editarCriteri.vue";
 import editarPuntoControl from "../editar/editarPuntoControl.vue";
+import { useI18n } from 'vue-i18n'
+
 
 
 export default {
@@ -139,27 +141,37 @@ export default {
   methods: {
     async obtenerDatosRubrica() {
       try {
+        console.log(this.rubricaId)
+        // Obtener criterios y rubrica
         const res = await axios.get(`http://localhost:3000/criterios/${this.rubricaId}/puntoControl`);
-        
         this.rubrica = res.data.rubrica;
         this.criterios = res.data.criterios;
 
-        // Obtener la lista única de puntos de control con su peso
-        this.puntosDeControl = [];
-        res.data.criterios.forEach((criterio) => {
-          criterio.puntosDeControl.forEach((punto) => {
-            if (!this.puntosDeControl.some((p) => p.puntoControlId === punto.puntoControlId)) {
-              this.puntosDeControl.push({
-                puntoControlId: punto.puntoControlId,
-                puntoControlNombre: punto.puntoControlNombre,
-                pesoPuntoControl: punto.pesoPuntoControl,
-              });
-            }
-          });
-        });
+        this.criterios.sort((a, b) => a.criterioId - b.criterioId);
+
+
+        // Obtener puntos de control desde el nuevo endpoint
+        const puntosRes = await axios.get(`http://localhost:3000/rubricas/${this.rubricaId}/puntosDeControl`);
+        this.puntosDeControl = puntosRes.data.map((punto) => ({
+          puntoControlId: punto.id,
+          puntoControlNombre: punto.nombre,
+          pesoPuntoControl: punto.peso
+        }));
+
+        this.puntosDeControl.sort((a, b) => a.puntoControlId - b.puntoControlId);
+
+      
       } catch (error) {
         console.error("Error al obtener los datos de la rúbrica", error);
       }
+    },
+    getNombreCriterio(criterio){
+      const { locale } = useI18n()
+      console.log(criterio.criterioNombreEn)
+      if (locale.value === 'ca') return criterio.criterioNombre
+      if (locale.value === 'es' && criterio.criterioNombreEs !== null) return criterio.criterioNombreEs
+      if (locale.value === 'en' && criterio.criterioNombreEn !== null && criterio.criterioNombreEn !== '') return criterio.criterioNombreEn
+      return criterio.criterioNombre // fallback
     },
     actualizarRubrica() {
       this.mostrarFormulario = false;

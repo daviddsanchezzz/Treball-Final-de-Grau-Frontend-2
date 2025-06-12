@@ -1,14 +1,14 @@
 <template>
   <div class="max-w-5xl mx-auto p-8 bg-white border border-gray-200 rounded-lg shadow space-y-8">
     <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-semibold text-gray-800">Gestió de treballs</h2>
+      <h2 class="text-2xl font-semibold text-gray-800">{{ $t('gestionTrabajos') }}</h2>
       <button
       v-if="!trabajoSeleccionado && !trabajoParaEditar && !mostrarCrear"
         ref="botonCrearRef"
         @click="toggleCrearTrabajo"
         class="btn-confirm text-white  rounded-md transition"
       >
-        {{ 'Nou treball' }}
+        {{ $t('nuevoTrabajo') }}
       </button>
     </div>
 
@@ -22,7 +22,7 @@
         <input
           v-model="searchQuery"
           type="text"
-          placeholder="Buscar treball..."
+          :placeholder="$t('buscarTrabajo')"
           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
@@ -79,13 +79,14 @@
 
     <!-- Confirmación de eliminación -->
     <ConfirmacionEliminacion
-      :mensaje="'Estàs segur que vols eliminar aquest treball?'"
+      :mensaje="$t('confirmarEliminacionTrabajo')"
       :visible="confirmarEliminacion"
       @confirmado="eliminarTrabajo"
       @cancelado="cancelarEliminacion"
     />
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, computed, nextTick } from 'vue'
@@ -94,7 +95,11 @@ import CrearTrabajo from '../../components/crear/crearTrabajo.vue'
 import ConfirmacionEliminacion from '../../components/ConfirmacionEliminacion.vue'
 import DetallesTrabajo from '../../components/Detalles/DetallesTrabajo.vue'
 import editarTrabajo from '../../components/editar/editarTrabajo.vue'
+import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
+const toast = useToast()
 const trabajos = ref([])
 const mostrarCrear = ref(false)
 const confirmarEliminacion = ref(false)
@@ -139,7 +144,9 @@ const eliminarTrabajo = async () => {
     await axios.delete(`http://localhost:3000/trabajos/${trabajoAEliminar.value}`)
     obtenerTrabajos()
     cancelarEliminacion()
+    toast.success('Treball eliminat correctament')
   } catch (error) {
+    toast.error('Error al eliminar el treball')
     console.error('Error al eliminar trabajo', error)
   }
 }
@@ -189,9 +196,9 @@ const estadoClases = computed(() => (estado) => {
 
 const estadoTexto = computed(() => (estado) => {
   const textos = {
-    PENDIENTE: 'Pendent',
-    EN_PROGRESO: 'En progrés',
-    FINALIZADO: 'Finalitzat',
+    PENDIENTE: t('pendiente'),
+    EN_PROGRESO: t('en_progreso'),
+    FINALIZADO: t('finalizado'),
   }
   return textos[estado] || 'Desconegut'
 })

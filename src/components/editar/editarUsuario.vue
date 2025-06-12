@@ -55,7 +55,9 @@
   
   <script>
   import axios from 'axios'
-  
+  import { useToast } from 'vue-toastification'
+
+  const toast = useToast()
   export default {
     name: 'EditarUsuario',
     props: {
@@ -93,9 +95,11 @@
             email: this.form.email,
             esAdmin: this.form.esAdmin
           })
+          toast.success('Usuari actualitzat correctament')
           this.$emit('usuarioActualizado')
         } catch (error) {
           console.error('Error al actualizar usuario:', error)
+          toast.error(`Error al actualitzar l'usuari`)
         }
       },
       cancelarEdicion() {

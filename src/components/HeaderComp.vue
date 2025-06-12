@@ -9,17 +9,17 @@
         <img src="/logo-uab.svg" alt="UAB Logo" class="h-10" />
         <div>
           <h1 class="text-lg font-semibold text-black">
-            Universitat Autònoma de Barcelona
+            {{ $t('uab') }}
           </h1>
           <h2 class="text-sm font-semibold" style="color: #00785A">
-            Avaluador de Treballs Final d'Estudis
+            {{ $t('avaluador') }}
           </h2>
         </div>
       </div>
 
       <!-- Acciones -->
       <div class="flex items-center space-x-4">
-        <span class="text-black font-medium">Benvingut, {{ usuario }}</span>
+        <span class="text-black font-medium">{{ $t('bienvenido') }}, {{ usuario }}</span>
 
         <!-- Selector de idioma -->
         <div class="relative">
@@ -28,7 +28,8 @@
             class="px-3 py-1 text-white rounded"
             style="background-color: #00B48A"
           >
-            Idioma <span class="ml-1">▼</span>
+            {{ $t('idioma') }} 
+            <span class="ml-1">▼</span>
           </button>
           <div
             v-if="mostrarIdiomas"
@@ -51,14 +52,14 @@
                   Castellano
                 </button>
               </li>
-              <li>
+         <li>
                 <button
                   class="block w-full text-left px-4 py-2 hover:bg-gray-100"
                   @click="cambiarIdiomaLocal('en')"
                 >
                   English
                 </button>
-              </li>
+              </li> 
             </ul>
           </div>
         </div>
@@ -70,7 +71,8 @@
             class="px-3 py-1 border rounded text-black hover:bg-green-50 transition"
             style="border-color: #00785A"
           >
-            El meu perfil <span class="ml-1">▼</span>
+            {{ $t('perfil') }} 
+            <span class="ml-1">▼</span>
           </button>
           <div
             v-if="mostrarPerfil"
@@ -82,15 +84,15 @@
                   class="block w-full text-left px-4 py-2 hover:bg-gray-100"
                   @click="cambiarContrasenya"
                 >
-                  Canviar contrasenya
-                </button>
+                {{$t('cambiar_contrasenya')}}
+              </button>
               </li>
               <li>
                 <button
                   class="block w-full text-left px-4 py-2 hover:bg-gray-100"
                   @click="logout"
                 >
-                  Desconectar
+                  {{$t('desconectar')}}
                 </button>
               </li>
             </ul>
@@ -111,7 +113,7 @@
         :class="{ 'text-green-300': isAdminRoute }"
         class="px-6 py-2 mx-2 text-white focus:ring-0 border-none transition-all duration-300 transform hover:scale-105"
       >
-        Panell Administrador
+        {{ $t('Panel_admin') }}
       </button>
 
       <!-- Botón de Panell Professor -->
@@ -120,8 +122,8 @@
         :class="{ 'text-green-300': isUserRoute }"
         class="px-6 py-2 mx-2 text-white focus:ring-0 border-none transition-all duration-300 transform hover:scale-105"
       >
-        Panell Professor
-      </button>
+      {{ $t('prof') }}
+    </button>
     </div>
   </header>
 </template>
@@ -164,8 +166,8 @@ export default {
       this.$router.push('/login');
     },
     cambiarIdiomaLocal(idioma) {
-      this.$emit('cambiar-idioma', idioma);
-      this.mostrarIdiomas = false;
+      this.$i18n.locale = idioma
+      this.mostrarIdiomas = false
     },
     cambiarContrasenya() {
       this.$router.push(`/user/${this.userId}/cambiar-contrasenya`);

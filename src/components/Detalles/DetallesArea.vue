@@ -7,13 +7,13 @@
     </div>
 
     <div v-if="area" class="relative top-0 left-0 w-full">
-      <h2 class="text-2xl font-semibold text-gray-800">Detalls de l'Àrea: {{ area.area }}</h2>
+      <h2 class="text-2xl font-semibold text-gray-800">{{ $t('detallsArea') }}: {{ area.area }}</h2>
 
       <div class="mt-6">
-        <h4 class="text-lg font-semibold text-gray-700">Rúbriques:</h4>
+        <h4 class="text-lg font-semibold text-gray-700">{{ $t('rubriques') }}:</h4>
 
         <div v-if="area.rubricas && area.rubricas.length === 0">
-          <p class="text-gray-600 text-sm">Encara no s'ha assignat cap rúbrica a aquesta àrea</p>
+          <p class="text-gray-600 text-sm">{{ $t('encaraNoAsignada') }}</p>
         </div>
 
         <ul v-else class="divide-y divide-gray-200 mt-4">
@@ -37,20 +37,20 @@
             @click="mostrarSelector = !mostrarSelector"
             class="btn-confirm text-white px-2 py-1 rounded-md transition"
           >
-            Assignar Rúbrica
+            {{ $t('assignarRubrica') }}
           </button>
         </div>
 
         <!-- Buscador de rúbricas -->
         <div v-if="mostrarSelector" class="mt-4 space-y-4">
           <div>
-            <label class="block mb-2 text-sm text-gray-700">Cerca una rúbrica:</label>
+            <label class="block mb-2 text-sm text-gray-700">{{ $t('cercaRubrica') }}:</label>
             <input
               v-model="busquedaRubrica"
               @focus="mostrarSugerencias = true"
               @blur="ocultarSugerenciasConRetraso"
               type="text"
-              placeholder="Nom de la rúbrica"
+              :placeholder="$t('nomRubrica')"
               class="w-full px-4 py-2 border rounded-md"
             />
             <ul
@@ -63,42 +63,38 @@
                 @mousedown.prevent="seleccionarRubrica(rubrica)"
                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               >
-                {{ rubrica.nombre }} ({{ rubrica.rol.nombre }})
+                {{ rubrica.nombre }} ({{ $t(rubrica.rol.nombre.toLowerCase()) }})
               </li>
             </ul>
-            <p v-if="rubricaSeleccionada" class="text-sm text-gray-600 mt-2">
-              Seleccionada: {{ rubricaSeleccionada.nombre }}
-            </p>
+
           </div>
 
           <div>
             <button
-            @click="mostrarSelector = !mostrarSelector"
-            class="btn-cancel"
-          >
-            Cancel·lar
-          </button>
+              @click="mostrarSelector = !mostrarSelector"
+              class="btn-cancel"
+            >
+              {{ $t('cancelar') }}
+            </button>
             <button
               @click="asignarRubrica"
               class="btn-confirm"
             >
-              Afegir
+              {{ $t('afegir') }}
             </button>
-
           </div>
-
         </div>
       </div>
     </div>
 
     <div v-else>
-      <p>Cargando...</p>
+      <p>{{ $t('cargando') }}...</p>
     </div>
 
     <!-- Componente de confirmación -->
     <ConfirmacionEliminacion
       v-if="mostrarConfirmacion"
-      :mensaje="'¿Estás seguro de que quieres eliminar esta rúbrica?'"
+      :mensaje="$t('confirmarEliminarRubrica')"
       :visible="mostrarConfirmacion"
       @confirmado="eliminarRubrica"
       @cancelado="cancelarEliminacion"
@@ -106,10 +102,13 @@
   </div>
 </template>
 
+
 <script>
 import axios from 'axios';
 import ConfirmacionEliminacion from '../ConfirmacionEliminacion.vue';  // Asegúrate de importar el componente de confirmación
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()
 export default {
   props: {
     areaId: {
@@ -173,6 +172,7 @@ export default {
         this.mostrarConfirmacion = false;  // Cerrar el modal de confirmación
       } catch (error) {
         console.error('Error al eliminar la rúbrica:', error);
+        toast.error('Error al eliminar la rúbrica')
       }
     },
     async obtenerRubricasDisponibles() {
@@ -205,9 +205,11 @@ export default {
         this.mostrarSelector = false;
         this.rubricaSeleccionada = null;
         this.busquedaRubrica = '';
+        
         await this.obtenerDetallesArea();  // Refrescar datos
       } catch (error) {
         console.error('Error al asignar rúbrica:', error);
+        toast.error('Error al asignar rúbrica')
       }
     }
   },

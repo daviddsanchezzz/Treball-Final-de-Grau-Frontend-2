@@ -93,6 +93,9 @@
 <script>
 import axios from 'axios';
 import ConfirmacionEliminacion from '../ConfirmacionEliminacion.vue';
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 export default {
   name: 'DetallesTrabajo',
@@ -180,6 +183,7 @@ export default {
           this.busquedaEvaluador = '';
         } catch (error) {
           console.error('Error al añadir evaluador', error);
+          toast.error('Error al afegir un evaluador')
         }
       }
     },
@@ -201,6 +205,7 @@ export default {
       } catch (error) {
         console.error('Error al eliminar el evaluador', error);
         this.confirmacionVisible = false;
+        toast.error('Error al eliminar un evaluador')
       }
     },
 

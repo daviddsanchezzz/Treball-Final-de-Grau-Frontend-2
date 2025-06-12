@@ -1,14 +1,14 @@
 <template>
   <div class="max-w-5xl mx-auto p-8 bg-white border border-gray-200 rounded-lg shadow space-y-8">
     <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-semibold text-gray-800">Gestió d'usuaris</h2>
+      <h2 class="text-2xl font-semibold text-gray-800">{{ $t('title') }}</h2>
       <button
         v-if="!mostrarEdicion && !mostrarCrear"
         ref="botonCrearRef"
         @click="toggleCrearUsuario"
-        class="btn-confirm text-white  rounded-md transition"
+        class="btn-confirm text-white rounded-md transition"
       >
-        {{ 'Nou usuari' }}
+        {{ $t('newUser') }}
       </button>
     </div>
 
@@ -20,14 +20,12 @@
     />
 
     <!-- Formulario para editar usuario -->
-      <EditarUsuario
-        v-if="mostrarEdicion"
-
-        :usuario="usuarioEnEdicion"
-        @usuarioActualizado="handleUsuarioActualizado"
-        @cancelarEdicion="mostrarEdicion = false"
-      />
-
+    <EditarUsuario
+      v-if="mostrarEdicion"
+      :usuario="usuarioEnEdicion"
+      @usuarioActualizado="handleUsuarioActualizado"
+      @cancelarEdicion="mostrarEdicion = false"
+    />
 
     <!-- Buscador -->
     <div class="mt-6">
@@ -35,7 +33,7 @@
         v-if="!mostrarEdicion && !mostrarCrear"
         v-model="searchQuery"
         type="text"
-        placeholder="Buscar usuari..."
+        :placeholder="$t('searchPlaceholder')"
         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
       />
     </div>
@@ -49,16 +47,16 @@
           class="p-4 flex justify-between items-center hover:bg-gray-50 transition"
         >
           <div>
-            <p class="text-gray-800 font-medium"> {{ usuario.nombre }}</p>
+            <p class="text-gray-800 font-medium">{{ usuario.nombre }}</p>
             <p class="text-gray-600 text-sm">{{ usuario.email }}</p>
           </div>
           <div class="flex gap-8 items-center">
             <span
               v-if="usuario.esAdmin"
-              class="text-white text-[10px] px-1 py-0.5 rounded-full ml-2 font-medium" 
+              class="text-white text-[10px] px-1 py-0.5 rounded-full ml-2 font-medium"
               style="background-color: #00785A"
             >
-              Admin
+              {{ $t('admin') }}
             </span>
             <button
               @click="editarUsuario(usuario)"
@@ -79,13 +77,14 @@
 
     <!-- Confirmación de eliminación -->
     <ConfirmacionEliminacion
-      :mensaje="'¿Estàs segur que vols eliminar aquest professor?'"
+      :mensaje="$t('deleteConfirmation')"
       :visible="confirmarEliminacion"
       @confirmado="eliminarUsuario"
       @cancelado="cancelarEliminacion"
     />
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, nextTick, computed } from 'vue'
@@ -102,7 +101,9 @@ const confirmarEliminacion = ref(false)
 const usuarioAEliminar = ref(null)
 const botonCrearRef = ref(null)
 const searchQuery = ref('')
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()
 // Obtener lista de usuarios
 const obtenerUsuarios = async () => {
   try {
@@ -160,8 +161,10 @@ const eliminarUsuario = async () => {
     await axios.delete(`http://localhost:3000/usuarios/${usuarioAEliminar.value}`)
     obtenerUsuarios()
     cancelarEliminacion()
+    toast.success('Usuari eliminat correctament')
   } catch (error) {
     console.error('Error al eliminar usuario', error)
+    toast.error(`Error al eliminar l'usuari`)
   }
 }
 

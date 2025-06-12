@@ -41,7 +41,9 @@
   
   <script>
   import axios from 'axios';
-  
+  import { useToast } from 'vue-toastification'
+
+  const toast = useToast()
   export default {
     props: {
       punto: {
@@ -62,8 +64,10 @@
             nombre: this.nombre,
             peso: this.peso,
           });
+          toast.success('Punt de control actualitzat correctament')
           this.$emit('cerrar');
         } catch (error) {
+          toast.error('Error al actualitzar el punt de control')
           console.error('Error al guardar los canvis del punt de control:', error);
         }
       },

@@ -1,9 +1,9 @@
 <template>
   <div class="space-y-4 mx-auto mt-8 p-6 bg-white rounded-xl shadow-md">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Crear Usuari</h2>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ $t('crearUsuari') }}</h2>
     <form @submit.prevent="crearUsuario">
       <div class="mb-4">
-        <label class="block text-gray-700">Nom</label>
+        <label class="block text-gray-700">{{ $t('nombre') }}</label>
         <input
           v-model="nombre"
           type="text"
@@ -13,7 +13,7 @@
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700">Email</label>
+        <label class="block text-gray-700">{{ $t('email') }}</label>
         <input
           v-model="email"
           type="email"
@@ -23,7 +23,7 @@
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700">Contrasenya</label>
+        <label class="block text-gray-700">{{ $t('contrasenya') }}</label>
         <input
           v-model="contraseña"
           type="password"
@@ -32,61 +32,48 @@
         />
       </div>
 
-      <div class="mb-4 flex" >
-        <label class="inline-flex items-center space-x-2"> 
+      <div class="mb-4 flex">
+        <label class="inline-flex items-center space-x-2">
           <input
             v-model="esAdmin"
             type="checkbox"
             class="form-checkbox text-green-600"
           />
-          <span>Administrador</span>
+          <span>{{ $t('administrador') }}</span>
         </label>
       </div>
-      
+
       <div class="flex justify-end space-x-4">
         <button
           class="btn-cancel"
           @click="cancelarCrear()"
         >
-          Cancel·lar
+          {{ $t('cancel') }}
         </button>
         <button
           type="submit"
           class="btn-confirm"
         >
-          Crear Usuari
+          {{ $t('crearUsuari') }}
         </button>
       </div>
     </form>
-
-    <!-- Componente de notificación -->
-    <SaltoNotificacion 
-      v-if="mensaje" 
-      :mensaje="mensaje" 
-      :tipo="tipoNotificacion" 
-    />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import SaltoNotificacion from '../SaltoNotificacion.vue';  // Asegúrate de importar el componente
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 export default {
-  components: {
-    SaltoNotificacion
-  },
-  props: {
-    
-  },
   data() {
     return {
       nombre: '',
       email: '',
       contraseña: '',
       esAdmin: false,
-      mensaje: '',  // Para el mensaje de la notificación
-      tipoNotificacion: '',  // 'success' o 'error'
     };
   },
   methods: {
@@ -96,27 +83,24 @@ export default {
           nombre: this.nombre,
           email: this.email,
           contraseña: this.contraseña,
-          esAdmin: this.esAdmin,  // Usamos el valor de la prop esAdmin
+          esAdmin: this.esAdmin,
         });
 
-        if (response.status === 201) { // Solo si la respuesta es exitosa
-          this.mensaje = 'Usuario creado correctamente';
-          this.tipoNotificacion = 'success';
+        if (response.status === 201) {
           this.nombre = '';
           this.email = '';
           this.contraseña = '';
           this.esAdmin = false;
           
-          // Emitir el evento al componente padre indicando que el usuario fue creado
+          toast.success(this.$t('usuarioCreadoCorrectamente'));
           this.$emit('usuarioCreado', { nombre: this.nombre, esAdmin: this.esAdmin });
         }
       } catch (error) {
         console.error(error);
-        this.mensaje = error.response?.data?.error || 'Error al crear usuario';
-        this.tipoNotificacion = 'error';
+        toast.error(this.$t('errorCrearUsuario'));
       }
     },
-    cancelarCrear(){
+    cancelarCrear() {
       this.$emit('cancelar')
     }
   },

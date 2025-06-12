@@ -1,10 +1,10 @@
 <template>
     <div class="max-w-md mx-auto mt-6 p-6 bg-white shadow-lg rounded-lg">
-      <h2 class="text-2xl font-semibold mb-4 text-center text-green-700">Canviar contrasenya</h2>
+      <h2 class="text-2xl font-semibold mb-4 text-center text-green-700">{{$t('changePassword')}}</h2>
   
       <form @submit.prevent="cambiarContrasenya">
         <div class="mb-4">
-          <label class="block text-gray-700 font-medium mb-1" for="actual">Contrasenya actual</label>
+          <label class="block text-gray-700 font-medium mb-1" for="actual"> {{$t('actualPassword')}} </label>
           <input
             v-model="contrasenyaActual"
             type="password"
@@ -15,7 +15,7 @@
         </div>
   
         <div class="mb-4">
-          <label class="block text-gray-700 font-medium mb-1" for="nova">Nova contrasenya</label>
+          <label class="block text-gray-700 font-medium mb-1" for="nova"> {{ $t('newPassword') }}</label>
           <input
             v-model="novaContrasenya"
             type="password"
@@ -26,7 +26,7 @@
         </div>
   
         <div class="mb-6">
-          <label class="block text-gray-700 font-medium mb-1" for="confirmar">Confirma la nova contrasenya</label>
+          <label class="block text-gray-700 font-medium mb-1" for="confirmar">{{$t('confirmPassword')}}</label>
           <input
             v-model="confirmarContrasenya"
             type="password"
@@ -41,57 +41,41 @@
             type="submit"
             class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded transition duration-300 my-4"
           >
-            Actualitzar contrasenya
-          </button>
+          {{ $t('changePassword') }}
+        </button>
   
           <button
             type="button"
             @click="goBack"
             class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-300"
           >
-            Cancel·lar
+            {{ $t('cancel') }}
           </button>
-  
-          <a
-            href="#"
-            class="block text-center text-sm text-blue-500 hover:text-blue-700 mt-4"
-          >
-            He oblidat la meva contrasenya
-          </a>
         </div>
       </form>
   
-      <SaltoNotificacion  v-if="mensaje" :mensaje="mensaje" :tipo="tipo" />
     </div>
   </template>
   
   <script>
-  import SaltoNotificacion from '../../components/SaltoNotificacion.vue'; // Asegúrate de que la ruta sea correcta
+  import { useToast } from 'vue-toastification'
+
+  const toast = useToast()
   
   export default {
     name: 'CambiarContrasenya',
-    components: {
-      SaltoNotificacion,
-    },
     data() {
       return {
         contrasenyaActual: '',
         novaContrasenya: '',
         confirmarContrasenya: '',
-        mensaje: '',
-        tipo: ''
       };
     },
     methods: {
       
         async cambiarContrasenya() {
-            // Reiniciar mensajes
-            this.mensaje = '';
-            this.tipo = '';
-
             if (this.novaContrasenya !== this.confirmarContrasenya) {
-                this.mensaje = 'Les contrasenyes no coincideixen.';
-                this.tipo = 'error';
+                toast.error(this.$t('passwordsDontMatch'))
                 return;
             }
 
@@ -111,28 +95,23 @@
                 })
                 });
 
-                const data = await response.json();
-
                 if (!response.ok) {
-                this.mensaje = data.message || 'Error desconegut.';
-                this.tipo = 'error';
-                return;
+                  toast.error(this.$t('passwordChangeError'))
+                  return;
                 }
-
-                this.mensaje = data.message || 'Contrasenya actualitzada correctament.';
-                this.tipo = 'success';
 
                 this.contrasenyaActual = '';
                 this.novaContrasenya = '';
                 this.confirmarContrasenya = '';
+
+                toast.success(this.$t('passwordChangedSuccess'))
 
                 setTimeout(() => {
                 this.$router.go(-1);
                 }, 2000);
 
             } catch (err) {
-                this.mensaje = 'Error de connexió amb el servidor.';
-                this.tipo = 'error';
+              toast.error(this.$t('passwordChangeError'))
             }
             },
 

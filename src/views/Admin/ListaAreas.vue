@@ -1,31 +1,31 @@
 <template>
   <div class="max-w-5xl mx-auto p-8 bg-white border border-gray-200 rounded-lg shadow space-y-8">
     <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-semibold text-gray-800">Gestió d'àrees</h2>
+      <h2 class="text-2xl font-semibold text-gray-800">{{ $t('gestion_areas') }}</h2>
       <button
         v-if="!mostrarDetalle && !mostrarEditar && !mostrarCrear"
         ref="botonCrearRef"
         @click="toggleCrearArea"
         class="btn-confirm text-white  rounded-md transition"
       >
-        {{ 'Nova àrea' }}
+        {{ $t('nueva_area') }}
       </button>
     </div>
 
     <!-- Formulario para crear área -->
-    <CrearArea v-if="mostrarCrear" @areaCreada="handleAreaCreada" @cancelar="handleAreaCreada"/>
+    <CrearArea v-if="mostrarCrear" @regresar="regresarALista"/>
 
     <!-- Buscador -->
     <div class="mt-6" v-if="!mostrarDetalle && !mostrarEditar && !mostrarCrear">
       <input
         v-model="searchQuery"
         type="text"
-        placeholder="Buscar àrea..."
+        :placeholder="$t('buscar_area')"
         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
       />
     </div>
 
-    <!-- Lista de áreas (ocultada cuando se visualiza el detalle de un área o la edición) -->
+    <!-- Lista de áreas -->
     <div v-if="!mostrarDetalle && !mostrarEditar && !mostrarCrear" class="mt-6">
       <ul class="divide-y divide-gray-200">
         <li
@@ -37,22 +37,13 @@
             <p class="text-gray-800 font-medium">{{ area.nombre }}</p>
           </div>
           <div class="flex gap-8 items-center">
-            <button
-              @click="verMas(area.id)"
-              class="text-gray-700 hover:text-black"
-            >
+            <button @click="verMas(area.id)" class="text-gray-700 hover:text-black">
               <font-awesome-icon icon="eye" />
             </button>
-            <button
-              @click="editarArea(area.id, area.nombre)"
-              class="text-gray-700 hover:text-black"
-            >
+            <button @click="editarArea(area.id, area.nombre)" class="text-gray-700 hover:text-black">
               <font-awesome-icon icon="pen" />
             </button>
-            <button
-              @click="mostrarConfirmacionEliminar(area.id)"
-              class="text-gray-700 hover:text-black"
-            >
+            <button @click="mostrarConfirmacionEliminar(area.id)" class="text-gray-700 hover:text-black">
               <font-awesome-icon icon="trash" />
             </button>
           </div>
@@ -60,21 +51,20 @@
       </ul>
     </div>
 
-    <!-- Vista de detalles del área -->
+    <!-- Detalles y edición -->
     <DetallesArea v-if="mostrarDetalle" :areaId="areaSeleccionadaId" @regresar="regresarALista" />
-
-    <!-- Vista de edición del área -->
-    <EditarArea v-if="mostrarEditar" :areaId="areaSeleccionadaId" :nombre="areaSeleccionadaNombre" @regresar="regresarALista" @areaEditada="handleAreaEditada" />
+    <EditarArea v-if="mostrarEditar" :areaId="areaSeleccionadaId" :nombre="areaSeleccionadaNombre" @regresar="regresarALista"  />
 
     <!-- Confirmación de eliminación -->
     <ConfirmacionEliminacion
-      :mensaje="'¿Estàs segur que vols eliminar aquesta àrea?'"
+      :mensaje="$t('confirmar_eliminacion_area')"
       :visible="confirmarEliminacion"
       @confirmado="eliminarArea"
       @cancelado="cancelarEliminacion"
     />
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
@@ -83,7 +73,9 @@ import CrearArea from '../../components/crear/crearArea.vue'
 import ConfirmacionEliminacion from '../../components/ConfirmacionEliminacion.vue'
 import DetallesArea from '../../components/Detalles/DetallesArea.vue'
 import EditarArea from '../../components/editar/editarArea.vue'
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()
 const areas = ref([]) // Lista de áreas
 const mostrarCrear = ref(false) // Estado para mostrar el formulario de creación
 const confirmarEliminacion = ref(false) // Estado para mostrar la confirmación de eliminación
@@ -128,9 +120,11 @@ const eliminarArea = async () => {
   try {
     await axios.delete(`http://localhost:3000/areas/${areaAEliminar.value}`)
     obtenerAreas() // Volver a cargar las áreas después de eliminar
+    toast.success(`Área eliminada correctament`)
     cancelarEliminacion()
   } catch (error) {
     console.error('Error al eliminar área', error)
+    toast.error('Error al eliminar área')
   }
 }
 
@@ -151,19 +145,10 @@ const verMas = (areaId) => {
 const regresarALista = () => {
   mostrarDetalle.value = false
   mostrarEditar.value = false
-}
-
-// Manejar la creación de un área
-const handleAreaCreada = () => {
   mostrarCrear.value = false
-  obtenerAreas() // Volver a cargar las áreas después de la creación
+  obtenerAreas();
 }
 
-// Manejar la edición de un área
-const handleAreaEditada = () => {
-  mostrarEditar.value = false
-  obtenerAreas() // Recargar las áreas después de editar
-}
 
 // Cargar las áreas cuando se monta el componente
 onMounted(() => {

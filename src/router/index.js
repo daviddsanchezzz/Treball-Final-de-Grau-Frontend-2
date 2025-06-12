@@ -15,8 +15,7 @@ import ListaAreas from '../views/Admin/ListaAreas.vue'
 const routes = [
   {
     path: '/',
-    name: 'Login',
-    component: UserLogin
+    redirect: '/login'
   },
   {
     path: '/login',

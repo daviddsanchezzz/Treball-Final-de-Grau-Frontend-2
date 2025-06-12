@@ -1,13 +1,6 @@
 <template>
     <div class="space-y-4 mx-auto mt-8 p-6 bg-white rounded-xl shadow-md">
       <h2 class="text-2xl font-semibold text-gray-800 mb-4">Editar Treball</h2>
-      
-      <!-- Notificación -->
-      <SaltoNotificacio 
-        v-if="notificacion.mostrar"
-        :mensaje="notificacion.mensaje"
-        :tipo="notificacion.tipo"
-      />
   
       <form @submit.prevent="actualizarTrabajo">
         <!-- Títol -->
@@ -101,12 +94,12 @@
   import Multiselect from 'vue-multiselect'
   import 'vue-multiselect/dist/vue-multiselect.min.css'
   import axios from 'axios'
-  import SaltoNotificacio from '../SaltoNotificacion.vue' // Asegúrate de importar correctamente
-  
+  import { useToast } from 'vue-toastification'
+
+  const toast = useToast()  
   export default {
     components: {
       Multiselect,
-      SaltoNotificacio
     },
     props: {
       trabajo: Object
@@ -123,11 +116,6 @@
         },
         tutores: [],
         areas: [],
-        notificacion: {
-          mostrar: false,
-          mensaje: '',
-          tipo: 'success'
-        }
       }
     },
     async mounted() {
@@ -164,11 +152,11 @@
             areaId
           })
   
-          this.mostrarNotificacion('Treball actualitzat correctament', 'success')
+          toast.success('Treball actualitzat correctament')
           this.$emit('actualizado')
         } catch (error) {
           console.error('Error al actualizar trabajo:', error)
-          this.mostrarNotificacion('Error al actualitzar el treball', 'error')
+          toast.error('Error al actualitzar el treball', 'error')
         }
       },
       cancelarEdicion() {
@@ -177,15 +165,6 @@
       customLabel(option) {
         return option.nombre
       },
-      mostrarNotificacion(mensaje, tipo) {
-        this.notificacion.mostrar = true
-        this.notificacion.mensaje = mensaje
-        this.notificacion.tipo = tipo
-  
-        setTimeout(() => {
-          this.notificacion.mostrar = false
-        }, 3000)
-      }
     }
   }
   </script>

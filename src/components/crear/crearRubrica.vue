@@ -1,9 +1,9 @@
 <template>
   <div class="p-4 space-y-4 mx-auto bg-white shadow-md rounded-md">
-    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Crear Rúbrica</h2>
+    <h2 class="text-2xl font-semibold text-gray-700 mb-4">{{$t('crearRubricaTitulo')}}</h2>
     <form @submit.prevent="submitRubrica">
       <div class="mb-4">
-        <label for="nombre" class="block text-sm font-medium text-gray-700">Nom de la rúbrica</label>
+        <label for="nombre" class="block text-sm font-medium text-gray-700">{{$t('crearRubricaNombre')}}</label>
         <input
           type="text"
           id="nombre"
@@ -13,7 +13,7 @@
         />
       </div>
       <div class="mb-4">
-        <label for="rolId" class="block text-sm font-medium text-gray-700">Seleccionar rol</label>
+        <label for="rolId" class="block text-sm font-medium text-gray-700">{{$t('crearRubricaSeleccionarRol')}}</label>
         <select
           id="rolId"
           v-model="rolId"
@@ -21,12 +21,12 @@
           required
         >
           <option v-for="rol in roles" :key="rol.id" :value="rol.id">
-            {{ rol.nombre }}
+            {{ $t(rol.nombre.toLowerCase()) }}
           </option>
         </select>
       </div>
       <div class="mb-4">
-        <label for="numPuntosDeControl" class="block text-sm font-medium text-gray-700">Nombre de punts de control</label>
+        <label for="numPuntosDeControl" class="block text-sm font-medium text-gray-700">{{$t('crearRubricaNumPuntosControl')}}</label>
         <input
           type="number"
           id="numPuntosDeControl"
@@ -41,13 +41,13 @@
           class="btn-cancel"
           @click="cancelarCrear()"
         >
-          Cancel·lar
-        </button>
+        {{ $t('cancel') }}
+      </button>
         <button
           type="submit"
           class="btn-confirm"
         >
-          Crear Rúbrica
+          {{$t('crearRubricaCrear')}}
         </button>
       </div>
     </form>
@@ -56,7 +56,9 @@
 
 <script>
 import axios from 'axios';
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()  
 
 export default {
   data() {
@@ -83,10 +85,6 @@ export default {
       }
     },
     async submitRubrica() {
-      console.log(this.nombre)
-      console.log(this.rolId)
-      console.log(this.numPuntosDeControl)
-
       try {
         await axios.post('http://localhost:3000/rubricas', {
           nombre: this.nombre,
@@ -95,9 +93,11 @@ export default {
         });
         this.nombre = '';
         this.numPuntosDeControl = 1;
+        toast.success(this.$t('crearRubricaExito'))
         this.$emit('rubricaCreada')
       } catch (error) {
         console.error('Error al crear rúbrica:', error);
+        toast.error(this.$t('crearRubricaError'))
       }
     },
     cancelarCrear(){

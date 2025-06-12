@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-center min-h-screen bg-gray-50">
-    <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg border border-gray-200">
+    <div v-if="!verOlvidadoContraseña" class="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg border border-gray-200">
       <!-- Logo + título -->
       <div class="flex flex-col items-center mb-8">
         <img src="/logo-uab.svg" alt="UAB Logo" class="h-12 mb-3" />
@@ -49,29 +49,42 @@
         </button>
       </form>
 
-      <a
-        href="#"
-        class="block text-center text-sm text-blue-500 hover:text-blue-700 mt-4"
-      >
-        He oblidat la meva contrasenya
-      </a>
+      <div class="flex justify-center mt-4">
+        <button
+          class="text-sm text-blue-500 hover:text-blue-700"
+          @click="verOlvidadoContraseña = true"
+        >
+          He oblidat la meva contrasenya
+        </button>
+      </div>
 
-      <p v-if="error" class="text-red-500 text-center mt-4">{{ error }}</p>
     </div>
+
+    <OlvidadoContraseña 
+      v-if="verOlvidadoContraseña"
+      @regresar="verOlvidadoContraseña=false"
+    />
+    
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import OlvidadoContraseña from './User/OlvidadoContraseña.vue';
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()
 export default {
   name: 'UserLogin',
   data() {
     return {
       email: '',
       password: '',
-      error: '',
+      verOlvidadoContraseña: false,
     };
+  },
+  components:{
+    OlvidadoContraseña,
   },
   methods: {
     async handleLogin() {
@@ -90,7 +103,7 @@ export default {
 
         this.$router.push(`/user/${id}`);
       } catch (err) {
-        this.error = 'Correu o contrasenya incorrectes';
+        toast.error('Usuari o contrasenya incorrectes')
         console.error(err);
       }
     }
