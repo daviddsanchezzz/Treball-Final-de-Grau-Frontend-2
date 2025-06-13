@@ -211,17 +211,17 @@ export default {
     async cargarDatos() {
       try {
         // Obtener detalles del trabajo
-        const trabajoRes = await api.get(/trabajos/${this.trabajoId});
+        const trabajoRes = await axios.get(`http://localhost:3000/trabajos/${this.trabajoId}`);
         this.trabajo = trabajoRes.data;
         console.log(this.trabajo)
 
         // Obtener rubricaId desde backend
-        const datosRes = await api.get(/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos);
+        const datosRes = await axios.get(`http://localhost:3000/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos`);
         this.rubricaId = datosRes.data.rubricaId;
         this.rol = datosRes.data.rolNombre;
 
         // Obtener criterios y puntos de control usando rubricaId
-        const rubricaRes = await api.get(/criterios/${this.rubricaId}/puntoControl);
+        const rubricaRes = await axios.get(`http://localhost:3000/criterios/${this.rubricaId}/puntoControl`);
         this.rubrica = rubricaRes.data.rubrica;
         this.criterios = rubricaRes.data.criterios;
         this.criterios.sort((a, b) => a.criterioId - b.criterioId);
@@ -247,7 +247,7 @@ export default {
 
         this.criterios.forEach(criterio => {
           criterio.puntosDeControl.forEach(puntoControl => {
-            const clave = ${puntoControl.puntoControlId}-${puntoControl.puntoControlNombre}-${puntoControl.pesoPuntoControl};
+            const clave = `${puntoControl.puntoControlId}-${puntoControl.puntoControlNombre}-${puntoControl.pesoPuntoControl}`;
 
             if (puntosUnicos[clave]) {
               puntosUnicos[clave].cantidad += 1;
@@ -265,7 +265,7 @@ export default {
         this.puntosDeControl = Object.values(puntosUnicos);
 
         
-        const evaluacionesRes = await api.get(/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor);
+        const evaluacionesRes = await axios.get(`http://localhost:3000/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor`);
 
         // Inicializar la variable this.notas
         this.notas = {}; // Inicializar la estructura de notas vacía
@@ -294,7 +294,6 @@ export default {
         console.error("Error al cargar datos de evaluación:", error);
       }
     },
-
     async guardarEvaluacion(puntoControlId) {
       try {
         if (this.notas[puntoControlId] && typeof this.notas[puntoControlId] === 'object') {
