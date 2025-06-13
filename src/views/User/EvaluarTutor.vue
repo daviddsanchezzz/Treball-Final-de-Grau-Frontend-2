@@ -295,6 +295,7 @@ export default {
             }
 
             this.notas[puntoId][criterioId] = nota;
+            console.log(this.notas)
           });
         });
 
