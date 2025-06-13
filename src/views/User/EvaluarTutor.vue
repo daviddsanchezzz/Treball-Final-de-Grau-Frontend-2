@@ -210,105 +210,91 @@ export default {
   methods: {
     async cargarDatos() {
       try {
-        // Obtener trabajo
-        const trabajoRes = await api.get(`/trabajos/${this.trabajoId}`);
+        // Obtener detalles del trabajo
+        const trabajoRes = await api.get(/trabajos/${this.trabajoId});
         this.trabajo = trabajoRes.data;
+        console.log(this.trabajo)
 
-        // Obtener rubricaId y rol
-        const datosRes = await api.get(`/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos`);
+        // Obtener rubricaId desde backend
+        const datosRes = await api.get(/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos);
         this.rubricaId = datosRes.data.rubricaId;
         this.rol = datosRes.data.rolNombre;
 
-        // Obtener criterios y puntos de control asociados
-        const rubricaRes = await api.get(`/criterios/${this.rubricaId}/puntoControl`);
+        // Obtener criterios y puntos de control usando rubricaId
+        const rubricaRes = await api.get(/criterios/${this.rubricaId}/puntoControl);
         this.rubrica = rubricaRes.data.rubrica;
-        this.criterios = rubricaRes.data.criterios.sort((a, b) => a.criterioId - b.criterioId);
+        this.criterios = rubricaRes.data.criterios;
+        this.criterios.sort((a, b) => a.criterioId - b.criterioId);
 
-        // Inicialización
         this.puntosDeControl = [];
-        this.pesos = {};
-        this.notas = {};
-        this.notasFinales = {};
-        this.observaciones = {};
+        const puntosUnicos = {};
 
-        const puntosUnicos = new Map();
+        this.pesos = {}; // Inicializa pesos vacío
 
-        // Recorremos criterios y sus puntos de control
         this.criterios.forEach(criterio => {
           criterio.puntosDeControl.forEach(punto => {
             const puntoId = punto.puntoControlId;
             const criterioId = criterio.criterioId;
             const peso = punto.pesoRelacion;
 
-            // Registrar punto de control si aún no está
-            if (!puntosUnicos.has(puntoId)) {
-              puntosUnicos.set(puntoId, {
-                puntoControlId: puntoId,
-                puntoControlNombre: punto.nombre,
-                pesoPuntoControl: punto.pesoPuntoControl,
-              });
-            }
-
-            // Inicializar pesos
             if (!this.pesos[puntoId]) {
               this.pesos[puntoId] = {};
             }
+
             this.pesos[puntoId][criterioId] = peso;
+          });
+        });
 
-            // Inicializar notas
-            if (!this.notas[puntoId]) {
-              this.notas[puntoId] = {};
-            }
-            this.notas[puntoId][criterioId] = null;
+        this.criterios.forEach(criterio => {
+          criterio.puntosDeControl.forEach(puntoControl => {
+            const clave = ${puntoControl.puntoControlId}-${puntoControl.puntoControlNombre}-${puntoControl.pesoPuntoControl};
 
-            // Inicializar observaciones si aún no existe
-            if (!this.observaciones[puntoId]) {
-              this.observaciones[puntoId] = '';
+            if (puntosUnicos[clave]) {
+              puntosUnicos[clave].cantidad += 1;
+            } else {
+              puntosUnicos[clave] = {
+                puntoControlId: puntoControl.puntoControlId,
+                puntoControlNombre: puntoControl.puntoControlNombre,
+                pesoPuntoControl: puntoControl.pesoPuntoControl,
+                cantidad: 1
+              };
             }
           });
         });
 
-        // Convertimos el map a array
-        this.puntosDeControl = Array.from(puntosUnicos.values());
+        this.puntosDeControl = Object.values(puntosUnicos);
 
-        // Inicializar notasFinales con null
-        this.puntosDeControl.forEach(p => {
-          this.notasFinales[p.puntoControlId] = null;
-        });
+        
+        const evaluacionesRes = await api.get(/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor);
 
-        this.notaFinal = null;
+        // Inicializar la variable this.notas
+        this.notas = {}; // Inicializar la estructura de notas vacía
 
-        // === NUEVO: Obtener evaluaciones del tutor ===
-        const evaluacionesRes = await api.get(`/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor`);
-
-        evaluacionesRes.data.forEach(evaluacion => {
-          const puntoId = evaluacion.puntoControlId;
-          this.observaciones[puntoId] = evaluacion.observacionPC;
-          this.notasFinales[puntoId] = evaluacion.notaFinalPC;
-
-          evaluacion.puntoControl.criterios.forEach(criterio => {
-            const criterioId = criterio.criterioId;
-            const nota = criterio.notas.length > 0 ? criterio.notas[0].nota : null;
-
-            if (!this.notas[puntoId]) {
-              this.notas[puntoId] = {};
+        // Iterar sobre las evaluaciones y asignar las notas a la estructura this.notas
+        evaluacionesRes.data.forEach((evaluacion) => {
+          if (!this.notas[evaluacion.puntoControlId]) {
+              this.notas[evaluacion.puntoControlId] = {};
+          }
+          this.observaciones[evaluacion.puntoControlId] = evaluacion.observacionPC;
+          this.notasFinales[evaluacion.puntoControlId] = evaluacion.notaFinalPC;
+          evaluacion.puntoControl.criterios.forEach((criterio) => {
+            if (criterio.notas.length > 0) {
+              this.notas[criterio.puntoControlId][criterio.criterioId] = criterio.notas[0].nota;
             }
+            else{
+              this.notas[criterio.puntoControlId][criterio.criterioId] = null;
+            }
+            
 
-            this.notas[puntoId][criterioId] = nota;
-            console.log(this.notas)
           });
         });
 
-        this.datosCargados = true;
-
+        this.datosCargados=true;
       } catch (error) {
-        console.error("Error cargando datos:", error);
-        toast.error("Error al cargar los datos. Intenta de nuevo.");
+        console.error("Error al cargar datos de evaluación:", error);
       }
     },
 
-
- 
     async guardarEvaluacion(puntoControlId) {
       try {
         if (this.notas[puntoControlId] && typeof this.notas[puntoControlId] === 'object') {
