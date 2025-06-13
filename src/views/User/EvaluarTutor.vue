@@ -271,15 +271,32 @@ export default {
         // Convertimos el map a array
         this.puntosDeControl = Array.from(puntosUnicos.values());
 
-        // Calculamos la suma de pesos por seguridad
-        this.sumaPesos = this.puntosDeControl.reduce((acc, p) => acc + (p.pesoPuntoControl || 0), 0);
-
         // Inicializar notasFinales con null
         this.puntosDeControl.forEach(p => {
           this.notasFinales[p.puntoControlId] = null;
         });
 
         this.notaFinal = null;
+
+        // === NUEVO: Obtener evaluaciones del tutor ===
+        const evaluacionesRes = await api.get(`/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor`);
+
+        evaluacionesRes.data.forEach(evaluacion => {
+          const puntoId = evaluacion.puntoControlId;
+          this.observaciones[puntoId] = evaluacion.observacionPC;
+          this.notasFinales[puntoId] = evaluacion.notaFinalPC;
+
+          evaluacion.puntoControl.criterios.forEach(criterio => {
+            const criterioId = criterio.criterioId;
+            const nota = criterio.notas.length > 0 ? criterio.notas[0].nota : null;
+
+            if (!this.notas[puntoId]) {
+              this.notas[puntoId] = {};
+            }
+
+            this.notas[puntoId][criterioId] = nota;
+          });
+        });
 
         this.datosCargados = true;
 
@@ -288,6 +305,9 @@ export default {
         toast.error("Error al cargar los datos. Intenta de nuevo.");
       }
     },
+
+
+ 
     async guardarEvaluacion(puntoControlId) {
       try {
         if (this.notas[puntoControlId] && typeof this.notas[puntoControlId] === 'object') {
