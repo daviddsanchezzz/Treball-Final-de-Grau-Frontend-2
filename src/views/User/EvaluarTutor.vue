@@ -210,88 +210,82 @@ export default {
   methods: {
     async cargarDatos() {
       try {
-        // Obtener detalles del trabajo
+        // Obtener trabajo
         const trabajoRes = await api.get(`/trabajos/${this.trabajoId}`);
         this.trabajo = trabajoRes.data;
-        console.log(this.trabajo)
 
-        // Obtener rubricaId desde backend
+        // Obtener rubricaId y rol
         const datosRes = await api.get(`/trabajo/${this.trabajoId}/usuario/${this.usuarioId}/datos`);
         this.rubricaId = datosRes.data.rubricaId;
         this.rol = datosRes.data.rolNombre;
 
-        // Obtener criterios y puntos de control usando rubricaId
+        // Obtener criterios y puntos de control asociados
         const rubricaRes = await api.get(`/criterios/${this.rubricaId}/puntoControl`);
         this.rubrica = rubricaRes.data.rubrica;
-        this.criterios = rubricaRes.data.criterios;
-        this.criterios.sort((a, b) => a.criterioId - b.criterioId);
+        this.criterios = rubricaRes.data.criterios.sort((a, b) => a.criterioId - b.criterioId);
 
+        // Inicialización
         this.puntosDeControl = [];
-        const puntosUnicos = {};
+        this.pesos = {};
+        this.notas = {};
+        this.notasFinales = {};
+        this.observaciones = {};
 
-        this.pesos = {}; // Inicializa pesos vacío
+        const puntosUnicos = new Map();
 
+        // Recorremos criterios y sus puntos de control
         this.criterios.forEach(criterio => {
           criterio.puntosDeControl.forEach(punto => {
             const puntoId = punto.puntoControlId;
             const criterioId = criterio.criterioId;
             const peso = punto.pesoRelacion;
 
+            // Registrar punto de control si aún no está
+            if (!puntosUnicos.has(puntoId)) {
+              puntosUnicos.set(puntoId, {
+                puntoControlId: puntoId,
+                puntoControlNombre: punto.nombre,
+                pesoPuntoControl: punto.pesoPuntoControl,
+              });
+            }
+
+            // Inicializar pesos
             if (!this.pesos[puntoId]) {
               this.pesos[puntoId] = {};
             }
-
             this.pesos[puntoId][criterioId] = peso;
-          });
-        });
 
-        this.criterios.forEach(criterio => {
-          criterio.puntosDeControl.forEach(puntoControl => {
-            const clave = `${puntoControl.puntoControlId}-${puntoControl.puntoControlNombre}-${puntoControl.pesoPuntoControl}`;
+            // Inicializar notas
+            if (!this.notas[puntoId]) {
+              this.notas[puntoId] = {};
+            }
+            this.notas[puntoId][criterioId] = null;
 
-            if (puntosUnicos[clave]) {
-              puntosUnicos[clave].cantidad += 1;
-            } else {
-              puntosUnicos[clave] = {
-                puntoControlId: puntoControl.puntoControlId,
-                puntoControlNombre: puntoControl.puntoControlNombre,
-                pesoPuntoControl: puntoControl.pesoPuntoControl,
-                cantidad: 1
-              };
+            // Inicializar observaciones si aún no existe
+            if (!this.observaciones[puntoId]) {
+              this.observaciones[puntoId] = '';
             }
           });
         });
 
-        this.puntosDeControl = Object.values(puntosUnicos);
+        // Convertimos el map a array
+        this.puntosDeControl = Array.from(puntosUnicos.values());
 
-        
-        const evaluacionesRes = await api.get(`/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor`);
+        // Calculamos la suma de pesos por seguridad
+        this.sumaPesos = this.puntosDeControl.reduce((acc, p) => acc + (p.pesoPuntoControl || 0), 0);
 
-        // Inicializar la variable this.notas
-        this.notas = {}; // Inicializar la estructura de notas vacía
-
-        // Iterar sobre las evaluaciones y asignar las notas a la estructura this.notas
-        evaluacionesRes.data.forEach((evaluacion) => {
-          if (!this.notas[evaluacion.puntoControlId]) {
-              this.notas[evaluacion.puntoControlId] = {};
-          }
-          this.observaciones[evaluacion.puntoControlId] = evaluacion.observacionPC;
-          this.notasFinales[evaluacion.puntoControlId] = evaluacion.notaFinalPC;
-          evaluacion.puntoControl.criterios.forEach((criterio) => {
-            if (criterio.notas.length > 0) {
-              this.notas[criterio.puntoControlId][criterio.criterioId] = criterio.notas[0].nota;
-            }
-            else{
-              this.notas[criterio.puntoControlId][criterio.criterioId] = null;
-            }
-            
-
-          });
+        // Inicializar notasFinales con null
+        this.puntosDeControl.forEach(p => {
+          this.notasFinales[p.puntoControlId] = null;
         });
 
-        this.datosCargados=true;
+        this.notaFinal = null;
+
+        this.datosCargados = true;
+
       } catch (error) {
-        console.error("Error al cargar datos de evaluación:", error);
+        console.error("Error cargando datos:", error);
+        toast.error("Error al cargar los datos. Intenta de nuevo.");
       }
     },
     async guardarEvaluacion(puntoControlId) {
