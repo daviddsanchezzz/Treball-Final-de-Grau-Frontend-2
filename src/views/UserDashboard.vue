@@ -161,6 +161,7 @@ export default {
         });
 
         this.trabajos = trabajos;
+        console.log(this.trabajos)
       } catch (error) {
         console.error('Error al obtener los trabajos:', error)
       }
