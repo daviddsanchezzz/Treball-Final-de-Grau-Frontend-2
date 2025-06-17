@@ -39,7 +39,7 @@
         <div>
           <button
             type="submit"
-            class="w-full btn-confirm"
+            class="w-full btn-confirm ml-0 mb-2"
           >
           {{ $t('changePassword') }}
         </button>
@@ -47,7 +47,7 @@
           <button
             type="button"
             @click="goBack"
-            class="w-full btn-cancel"
+            class="w-full btn-delete"
           >
             {{ $t('cancel') }}
           </button>
