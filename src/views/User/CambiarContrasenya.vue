@@ -39,7 +39,7 @@
         <div>
           <button
             type="submit"
-            class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded transition duration-300 my-4"
+            class="w-full btn-confirm"
           >
           {{ $t('changePassword') }}
         </button>
@@ -47,7 +47,7 @@
           <button
             type="button"
             @click="goBack"
-            class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-300"
+            class="w-full btn-cancel"
           >
             {{ $t('cancel') }}
           </button>
