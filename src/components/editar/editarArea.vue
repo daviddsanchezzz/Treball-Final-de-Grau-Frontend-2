@@ -138,7 +138,7 @@
           console.log(this.areaId)
           const response = await api.get(`/areas/porcentages/${this.areaId}`);
          
-          const data = response.json();
+          const data = response.data;
           this.percentatgeTutor = data.percentatgeFinalTutor;
           this.percentatgeAvaluadors = data.percentatgeFinalAvaluadors;
 
