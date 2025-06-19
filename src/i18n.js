@@ -141,6 +141,7 @@ const messages = {
         confirmEliminar: 'Estàs segur que vols eliminar l\'avaluador?'
       },
       actualitzarArea: 'Actualitzar àrea',
+      editarCriterio: 'Editar criteri',
 
 
 
@@ -288,6 +289,8 @@ const messages = {
         confirmEliminar: '¿Estás seguro que quieres eliminar al evaluador?'
       },
       actualitzarArea: 'Actualizar área',
+      editarCriterio: 'Editar criterio',
+
 
 
 
@@ -436,6 +439,10 @@ const messages = {
         confirmEliminar: 'Are you sure you want to remove the evaluator?'
       },
       actualitzarArea: 'Update area',
+      editarCriterio: 'Edit criterion',
+
+
+
 
 
 
