@@ -146,6 +146,8 @@
 
         } catch (err) {
           toast.error('Error al obtener los porcentajes del área.');
+          console.error('Error al guardar los cambios del criteri:', err);
+
         }
       },
 
