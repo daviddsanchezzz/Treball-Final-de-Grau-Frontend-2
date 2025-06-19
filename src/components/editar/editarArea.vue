@@ -137,9 +137,7 @@
         try {
           console.log(this.areaId)
           const response = await api.get(`/areas/porcentages/${this.areaId}`);
-          if (!response.ok) {
-            throw new Error('Error al obtener los porcentajes del área');
-          }
+         
           const data = await response.json();
           this.percentatgeTutor = data.percentatgeFinalTutor;
           this.percentatgeAvaluadors = data.percentatgeFinalAvaluadors;
