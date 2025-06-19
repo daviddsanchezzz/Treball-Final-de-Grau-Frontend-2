@@ -1,11 +1,11 @@
 <template>
     <div class="space-y-4 mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow">
-      <h3 class="text-xl font-semibold text-gray-800">Editar Rúbrica</h3>
+      <h3 class="text-xl font-semibold text-gray-800">{{ $t('editarRubrica')}}</h3>
   
       <form @submit.prevent="submitForm">
         <!-- Nombre de la rúbrica -->
         <div class="mb-4">
-          <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre de la rúbrica</label>
+          <label for="nombre" class="block text-sm font-medium text-gray-700">{{ $t('nombreRubrica')}}</label>
           <input
             v-model="rubrica.nombre"
             id="nombre"
@@ -17,7 +17,7 @@
   
         <!-- Rol asociado -->
         <div class="mb-4">
-          <label for="rol" class="block text-sm font-medium text-gray-700">Rol asociado</label>
+          <label for="rol" class="block text-sm font-medium text-gray-700">  {{ $t('rol') }}</label>
           <select v-model="rubrica.rol.id" id="rol" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
             <option v-for="rol in roles" :key="rol.id" :value="rol.id">{{ rol.nombre }}</option>
           </select>
@@ -26,10 +26,12 @@
   
         <div class="flex justify-end gap-4">
           <button type="button" @click="cancelarEdicion" class="btn-cancel">
-            Cancel·lar
+            {{ $t('cancel') }}
           </button>
           <button type="submit" class="btn-confirm">
             Actualitzar Rúbrica
+            {{ $t('actualitzarRubrica') }}
+
           </button>
         </div>
       </form>

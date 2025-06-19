@@ -151,6 +151,16 @@ const messages = {
       editarPuntControl: 'Editar punt de control',
       nomPuntControl:'Nom del punt de control',
       pes:'Pes',
+      editarRubrica: 'Editar rúbrica',
+      nombreRubrica:'Nom de la rúbrica',
+      actualitzarRubrica:'Actualitzar rúbrica',
+      editarTreball:'Editar treball',
+      noTutors:'No hi ha tutors disponibles',
+      noAreas:'No hi ha àrees disponibles',
+      actualizarTreball:'Actualitzar treball',
+      editarUsuario: 'Editar usuari',
+      nom:'Nom',
+      actualitzarUsuari:'Actualitzar usuari',
 
 
     },
@@ -306,7 +316,16 @@ const messages = {
       editarPuntControl: 'Editar punto de control',
       nomPuntControl:'Nombre del punto de control',
       pes:'Peso',
-
+      editarRubrica: 'Editar rúbrica',
+      nombreRubrica:'Nombre de la rúbrica',
+      actualitzarRubrica:'Actualizar rúbrica',
+      editarTreball:'Editar trabajo',
+      noTutors:'No hay tutores disponibles',
+      noAreas:'No hay áreas disponibles',
+      actualizarTreball:'Actualizar trabajo',
+      editarUsuario: 'Editar usuario',
+      nom:'Nombre',
+      actualitzarUsuari:'Actualizar usuario',
 
     
 
@@ -463,6 +482,17 @@ const messages = {
       editarPuntControl: 'Edit checkpoint',
       nomPuntControl:'Checkpoint name',
       pes:'Weight',
+      editarRubrica: 'Edit rubric',
+      nombreRubrica:'Rubric name',
+      actualitzarRubrica:'Update rubric',
+      editarTreball:'Edit project',
+      noTutors:'No supervisors available',
+      noAreas:'No areas available',
+      actualizarTreball:'Update project',
+      editarUsuario: 'Edit user',
+      nom:'Name',
+      actualitzarUsuari:'Update user',
+
 
 
 

@@ -1,10 +1,10 @@
 <!-- src/components/editar/EditarUsuario.vue -->
 <template>
     <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-md space-y-4">
-      <h3 class="text-xl font-semibold text-gray-800">Editar usuari</h3>
+      <h3 class="text-xl font-semibold text-gray-800">{{ $t('editarUsuario') }}</h3>
       <form @submit.prevent="actualizarUsuario" class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700">Nom</label>
+          <label class="block text-sm font-medium text-gray-700">{{ $t('nom') }}</label>
           <input
             v-model="form.nombre"
             type="text"
@@ -30,7 +30,7 @@
               type="checkbox"
               class="form-checkbox text-green-600"
             />
-            <span>Administrador</span>
+            <span> {{ $t('admin') }}</span>
           </label>
         </div>
   
@@ -40,13 +40,13 @@
             @click="cancelarEdicion"
             class="btn-cancel"
           >
-            Cancel·lar
+            {{ $t('cancel') }}
           </button>
           <button
             type="submit"
             class="btn-confirm"
           >
-            Actualitzar Usuari
+            {{ $t('actualitzarUsuari') }}
           </button>
         </div>
       </form>

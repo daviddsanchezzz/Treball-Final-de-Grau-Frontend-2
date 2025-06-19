@@ -1,11 +1,11 @@
 <template>
     <div class="space-y-4 mx-auto mt-8 p-6 bg-white rounded-xl shadow-md">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Editar Treball</h2>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ $t('editarTreball') }}</h2>
   
       <form @submit.prevent="actualizarTrabajo">
         <!-- Títol -->
         <div class="mb-4">
-          <label class="block text-gray-700">Títol</label>
+          <label class="block text-gray-700"> {{ $t('titulo') }}</label>
           <input
             v-model="form.titulo"
             type="text"
@@ -16,7 +16,7 @@
   
         <!-- Estudiant -->
         <div class="mb-4">
-          <label class="block text-gray-700">Estudiant</label>
+          <label class="block text-gray-700">{{ $t('estudiante') }}</label>
           <input
             v-model="form.estudiante"
             type="text"
@@ -27,7 +27,7 @@
   
         <!-- Descripció -->
         <div class="mb-4">
-          <label class="block text-gray-700">Descripció</label>
+          <label class="block text-gray-700">{{ $t('descripcion') }}</label>
           <textarea
             v-model="form.descripcion"
             class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -38,7 +38,7 @@
   
         <!-- Tutor -->
         <div class="mb-4">
-          <label class="block text-gray-700">Tutor</label>
+          <label class="block text-gray-700">{{ $t('tutor') }}</label>
           <div v-if="tutores.length">
             <multiselect
               v-model="form.tutor"
@@ -50,12 +50,12 @@
               required
             ></multiselect>
           </div>
-          <div v-else class="text-gray-500 italic text-sm">No hi ha tutors disponibles.</div>
+          <div v-else class="text-gray-500 italic text-sm">{{ $t('noTutors') }}.</div>
         </div>
   
         <!-- Àrea -->
         <div class="mb-4">
-          <label class="block text-gray-700">Àrea</label>
+          <label class="block text-gray-700">{{ $t('area') }}</label>
           <div v-if="areas.length">
             <multiselect
               v-model="form.area"
@@ -67,7 +67,7 @@
               required
             ></multiselect>
           </div>
-          <div v-else class="text-gray-500 italic text-sm">No hi ha àrees disponibles.</div>
+          <div v-else class="text-gray-500 italic text-sm">{{ $t('noAreas') }}.</div>
         </div>
   
         <!-- Botones -->
@@ -77,13 +77,13 @@
             @click="cancelarEdicion"
             class="btn-cancel"
           >
-            Cancel·lar
+            {{ $t('cancel') }}
           </button>
           <button
           type="submit"
           class="btn-confirm ml-4"
         >
-          Actualitzar Treball
+          {{ $t('actualizarTreball') }}
         </button>
         </div>
       </form>
