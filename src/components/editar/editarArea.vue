@@ -135,7 +135,7 @@
       },
       async obtenerDatos() {
         try {
-          const response = await api.fetch(`/areas/porcentages/${this.areaId}`);
+          const response = await api.get(`/areas/porcentages/${this.areaId}`);
           if (!response.ok) {
             throw new Error('Error al obtener los porcentajes del área');
           }
