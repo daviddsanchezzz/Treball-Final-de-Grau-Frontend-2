@@ -226,13 +226,12 @@ export default {
         toast.error('Error al guardar la evaluació')
       }
     },
-    getNombreCriterio(criterio){
+    getNombreCriterio(criterio) {
       const { locale } = useI18n()
-
       if (locale.value === 'ca') return criterio.criterioNombre
-      if (locale.value === 'es' && criterio.criterioNombreEs !== null) return criterio.criterioNombreEs
+      if (locale.value === 'es' && criterio.criterioNombreEs !== null && criterio.criterioNombreEs !== '') return criterio.criterioNombreEs
       if (locale.value === 'en' && criterio.criterioNombreEn !== null && criterio.criterioNombreEn !== '') return criterio.criterioNombreEn
-      return criterio.criterioNombre // fallback
+      return criterio.criterioNombre
     },
 
     getNotaClase(nota) {

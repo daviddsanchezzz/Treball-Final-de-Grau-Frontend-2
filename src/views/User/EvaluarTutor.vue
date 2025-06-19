@@ -381,13 +381,12 @@ export default {
       if (isNaN(valor) || valor < 0 || valor > 10) return '';
       return `n${valor}`;
     },
-    getNombreCriterio(criterio){
+    getNombreCriterio(criterio) {
       const { locale } = useI18n()
-
       if (locale.value === 'ca') return criterio.criterioNombre
-      if (locale.value === 'es' && criterio.criterioNombreEs !== null) return criterio.criterioNombreEs
+      if (locale.value === 'es' && criterio.criterioNombreEs !== null && criterio.criterioNombreEs !== '') return criterio.criterioNombreEs
       if (locale.value === 'en' && criterio.criterioNombreEn !== null && criterio.criterioNombreEn !== '') return criterio.criterioNombreEn
-      return criterio.criterioNombre // fallback
+      return criterio.criterioNombre
     },
     recalcularNotaFinal(puntoControlId) {
       let sumaNotas = 0;

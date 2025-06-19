@@ -142,7 +142,7 @@
                 <tr class="border bg-gray-50 text-center text-sm">
                   <td class="px-4 py-2 border font-semibold">{{$t('proposatMh')}}</td>
                   <template v-for="evaluador in evaluadores" :key="evaluador.evaluadorId">
-                    <td class="border px-4 py-2">  {{ evaluador.matricula ? 'Sí' : 'No' }}</td>
+                    <td class="border px-4 py-2">  {{ getMatricula(evaluador.matricula) }}</td>
                   </template>
                   <td class="px-4 py-2 border font-semibold"> </td>
 
@@ -389,14 +389,21 @@
         }
 
       },
-      getNombreCriterio(criterio){
-        const { locale } = useI18n()
+    getNombreCriterio(criterio) {
+      const { locale } = useI18n()
+      if (locale.value === 'ca') return criterio.criterioNombre
+      if (locale.value === 'es' && criterio.criterioNombreEs !== null && criterio.criterioNombreEs !== '') return criterio.criterioNombreEs
+      if (locale.value === 'en' && criterio.criterioNombreEn !== null && criterio.criterioNombreEn !== '') return criterio.criterioNombreEn
+      return criterio.criterioNombre
+    },
+    getMatricula(mh) {
+      const { locale } = useI18n();
+      if (locale.value === 'en') {
+        return mh ? 'Yes' : 'No';
+      }
+      return mh ? 'Sí' : 'No';
+    }
 
-        if (locale.value === 'ca') return criterio.criterioNombre
-        if (locale.value === 'es' && criterio.criterioNombreEs !== null) return criterio.criterioNombreEs
-        if (locale.value === 'en' && criterio.criterioNombreEn !== null && criterio.criterioNombreEn !== '') return criterio.criterioNombreEn
-        return criterio.criterioNombre // fallback
-      },
 
       
     },
