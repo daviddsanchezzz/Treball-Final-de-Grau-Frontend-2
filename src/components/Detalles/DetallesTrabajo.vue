@@ -2,42 +2,47 @@
   <div class="relative p-6 border rounded-lg shadow">
     <!-- Cruz para cerrar -->
     <button @click="$emit('cerrar')" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl">
-      &times; <!-- Cruz -->
+      &times;
     </button>
 
-    <h3 class="text-xl font-semibold mb-4 text-gray-800">Detalls del treball</h3>
-    <p class="mb-2"><strong>Títol:</strong> {{ trabajo.titulo }}</p>
-    <p class="mb-2"><strong>Estudiant:</strong> {{ trabajo.estudiante }}</p>
-    <p class="mb-2"><strong>Descripció:</strong> {{ trabajo.descripcion || 'No disponible' }}</p>
+    <h3 class="text-xl font-semibold mb-4 text-gray-800">{{ $t('detallsTreball.titol') }}</h3>
+    <p class="mb-2"><strong>{{ $t('detallsTreball.titolTreball') }}:</strong> {{ trabajo.titulo }}</p>
+    <p class="mb-2"><strong>{{ $t('detallsTreball.estudiant') }}:</strong> {{ trabajo.estudiante }}</p>
+    <p class="mb-2"><strong>{{ $t('detallsTreball.descripcio') }}:</strong> {{ trabajo.descripcion || $t('detallsTreball.noDisponible') }}</p>
 
     <!-- Tutor -->
-    <p class="mb-2"><strong>Tutor:</strong> {{ tutorNombre || 'No assignat' }}</p>
+    <p class="mb-2"><strong>{{ $t('detallsTreball.tutor') }}:</strong> {{ tutorNombre || $t('detallsTreball.noAssignat') }}</p>
 
     <!-- Área -->
-    <p class="mb-2"><strong>Àrea:</strong> {{ areaNombre || 'No assignada' }}</p>
+    <p class="mb-2"><strong>{{ $t('detallsTreball.area') }}:</strong> {{ areaNombre || $t('detallsTreball.noAssignada') }}</p>
 
     <!-- Evaluadores -->
-    <p class="mb-2"><strong>Avaluadors:</strong></p>
+    <p class="mb-2"><strong>{{ $t('detallsTreball.avaluadors') }}:</strong></p>
     <div v-if="evaluadores.length > 0">
-      <div v-for="(evaluador) in evaluadores" :key="evaluador.id" class="flex items-center justify-between px-3 hover:bg-white transition border-b border-gray-200">
+      <div
+        v-for="(evaluador) in evaluadores"
+        :key="evaluador.id"
+        class="flex items-center justify-between px-3 hover:bg-white transition border-b border-gray-200"
+      >
         <div class="flex items-center space-x-4">
           <span class="text-gray-800 font-medium">{{ evaluador.nombre }}</span>
         </div>
-        <button @click="mostrarConfirmacion(evaluador.id)" 
-                class="text-gray-700 hover:black text-lg px-4 py-2 transition">
+        <button
+          @click="mostrarConfirmacion(evaluador.id)"
+          class="text-gray-700 hover:black text-lg px-4 py-2 transition"
+        >
           <font-awesome-icon icon="trash" />
         </button>
       </div>
     </div>
-    
     <div v-else>
-      No hi ha avaluadors assignats
+      {{ $t('detallsTreball.noAvaluadors') }}
     </div>
 
     <!-- Componente de confirmación de eliminación -->
     <ConfirmacionEliminacion
       v-if="confirmacionVisible"
-      :mensaje="`Estàs segur que vols eliminar l'avaluador?`"
+      :mensaje="$t('detallsTreball.confirmEliminar')"
       :visible="confirmacionVisible"
       @confirmado="eliminarEvaluador"
       @cancelado="cancelarEliminacion"
@@ -45,13 +50,16 @@
 
     <!-- Botón para añadir evaluadores -->
     <button @click="toggleMostrarSelectorEvaluadores" class="mt-4 text-white px-4 py-2 rounded btn-confirm ml-0">
-      Afegir Avaluadors
+      {{ $t('detallsTreball.afegirAvaluador') }}
     </button>
 
     <!-- Selector de evaluadores -->
-    <div v-if="mostrarSelectorEvaluadores" class="absolute bottom-0 left-0 w-full h-[calc(100%-20px)] bg-gray-500 bg-opacity-50 flex justify-center items-start pt-10">
+    <div
+      v-if="mostrarSelectorEvaluadores"
+      class="absolute bottom-0 left-0 w-full h-[calc(100%-20px)] bg-gray-500 bg-opacity-50 flex justify-center items-start pt-10"
+    >
       <div class="bg-white p-6 rounded-lg shadow-lg max-h-full w-full md:w-96">
-        <h4 class="text-lg mb-4">Selecciona un avaluador</h4>
+        <h4 class="text-lg mb-4">{{ $t('detallsTreball.seleccionaAvaluador') }}</h4>
 
         <!-- Buscador de evaluadores -->
         <input
@@ -59,7 +67,7 @@
           @focus="mostrarSugerencias = true"
           @blur="ocultarSugerenciasConRetraso"
           type="text"
-          placeholder="Cerca un avaluador"
+          :placeholder="$t('detallsTreball.cercaAvaluador')"
           class="w-full px-4 py-2 border rounded-md"
         />
 
@@ -76,13 +84,17 @@
             {{ evaluador.nombre }}
           </li>
         </ul>
-        
+
         <div class="mt-4">
-          <button @click="cerrarSelector" class="btn-cancel text-black px-4 py-2 rounded ">
-            Cancel·lar
+          <button @click="cerrarSelector" class="btn-cancel text-black px-4 py-2 rounded">
+            {{ $t('detallsTreball.cancelar') }}
           </button>
-          <button @click="añadirEvaluador" class="btn-confirm ml-4 text-white px-4 py-2 rounded " :disabled="!evaluadorSeleccionado">
-            Afegir
+          <button
+            @click="añadirEvaluador"
+            class="btn-confirm ml-4 text-white px-4 py-2 rounded"
+            :disabled="!evaluadorSeleccionado"
+          >
+            {{ $t('detallsTreball.afegir') }}
           </button>
         </div>
       </div>
@@ -92,10 +104,10 @@
 
 <script>
 import ConfirmacionEliminacion from '../ConfirmacionEliminacion.vue';
-import { useToast } from 'vue-toastification'
+import { useToast } from 'vue-toastification';
+import api from '@/services/api';
 
-const toast = useToast()
-import api from '@/services/api'
+const toast = useToast();
 
 export default {
   name: 'DetallesTrabajo',
@@ -112,7 +124,7 @@ export default {
       areaNombre: null,
       confirmacionVisible: false,
       eliminarId: null,
-      mostrarSelectorEvaluadores: false,  // Esta es la propiedad del estado
+      mostrarSelectorEvaluadores: false,
       busquedaEvaluador: '',
       evaluadorSeleccionado: null,
       evaluadoresDisponibles: [],
@@ -183,7 +195,7 @@ export default {
           this.busquedaEvaluador = '';
         } catch (error) {
           console.error('Error al añadir evaluador', error);
-          toast.error('Error al afegir un evaluador')
+          toast.error('Error al afegir un evaluador');
         }
       }
     },
@@ -205,7 +217,7 @@ export default {
       } catch (error) {
         console.error('Error al eliminar el evaluador', error);
         this.confirmacionVisible = false;
-        toast.error('Error al eliminar un evaluador')
+        toast.error('Error al eliminar un evaluador');
       }
     },
 
@@ -219,15 +231,14 @@ export default {
           const tutorResponse = await api.get(`/usuarios/${this.trabajo.tutorId}`);
           this.tutorNombre = tutorResponse.data.nombre;
         } else {
-          this.tutorNombre = 'No assignat';
+          this.tutorNombre = this.$t('detallsTreball.noAssignat');
         }
 
         if (this.trabajo.areaId) {
           const areaResponse = await api.get(`/areas/${this.trabajo.areaId}`);
           this.areaNombre = areaResponse.data.area;
-
         } else {
-          this.areaNombre = 'No assignada';
+          this.areaNombre = this.$t('detallsTreball.noAssignada');
         }
       } catch (error) {
         console.error('Error obtenint tutor o àrea:', error);
@@ -235,7 +246,6 @@ export default {
         this.areaNombre = 'Error';
       }
     },
-
   },
   mounted() {
     this.obtenerEvaluadores();

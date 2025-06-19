@@ -121,6 +121,26 @@ const messages = {
         percentagePerPoint: 'Percentatge de cada punt de control',
         addCriterion: 'Afegir Criteri'
       },
+      detallsTreball: {
+        titol: 'Detalls del treball',
+        titolTreball: 'Títol',
+        estudiant: 'Estudiant',
+        descripcio: 'Descripció',
+        noDisponible: 'No disponible',
+        tutor: 'Tutor',
+        noAssignat: 'No assignat',
+        area: 'Àrea',
+        noAssignada: 'No assignada',
+        avaluadors: 'Avaluadors',
+        noAvaluadors: 'No hi ha avaluadors assignats',
+        afegirAvaluador: 'Afegir Avaluadors',
+        seleccionaAvaluador: 'Selecciona un avaluador',
+        cercaAvaluador: 'Cerca un avaluador',
+        cancelar: 'Cancel·lar',
+        afegir: 'Afegir',
+        confirmEliminar: 'Estàs segur que vols eliminar l\'avaluador?'
+      },
+
 
 
     },
@@ -245,7 +265,27 @@ const messages = {
         final: 'Final',
         percentagePerPoint: 'Porcentaje de cada punto de control',
         addCriterion: 'Añadir Criterio'
+      },
+      detallsTreball: {
+        titol: 'Detalles del trabajo',
+        titolTreball: 'Título',
+        estudiant: 'Estudiante',
+        descripcio: 'Descripción',
+        noDisponible: 'No disponible',
+        tutor: 'Tutor',
+        noAssignat: 'No asignado',
+        area: 'Área',
+        noAssignada: 'No asignada',
+        avaluadors: 'Evaluadores',
+        noAvaluadors: 'No hay evaluadores asignados',
+        afegirAvaluador: 'Añadir Evaluadores',
+        seleccionaAvaluador: 'Selecciona un evaluador',
+        cercaAvaluador: 'Buscar un evaluador',
+        cancelar: 'Cancelar',
+        afegir: 'Añadir',
+        confirmEliminar: '¿Estás seguro que quieres eliminar al evaluador?'
       }
+
 
 
     
@@ -373,6 +413,26 @@ const messages = {
         percentagePerPoint: 'Percentage per checkpoint',
         addCriterion: 'Add Criterion'
       },
+      detallsTreball: {
+        titol: 'Project Details',
+        titolTreball: 'Title',
+        estudiant: 'Student',
+        descripcio: 'Description',
+        noDisponible: 'Not available',
+        tutor: 'Supervisor',
+        noAssignat: 'Not assigned',
+        area: 'Area',
+        noAssignada: 'Not assigned',
+        avaluadors: 'Evaluators',
+        noAvaluadors: 'No evaluators assigned',
+        afegirAvaluador: 'Add Evaluators',
+        seleccionaAvaluador: 'Select an evaluator',
+        cercaAvaluador: 'Search for an evaluator',
+        cancelar: 'Cancel',
+        afegir: 'Add',
+        confirmEliminar: 'Are you sure you want to remove the evaluator?'
+      }
+
 
 
 
