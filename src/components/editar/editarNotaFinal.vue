@@ -1,7 +1,7 @@
 <template>
     <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-lg p-6 w-80">
-        <h2 class="text-lg font-semibold mb-4 text-center">Editar nota final</h2>
+        <h2 class="text-lg font-semibold mb-4 text-center"> {{ $t('editarNotaFinal') }}</h2>
   
         <input
           type="number"
@@ -17,21 +17,21 @@
             class="btn-confirm mr-2 ml-0"
             @click="emitirGuardar"
           >
-            Guardar
+            {{ $t('guardar') }}
           </button>
   
           <button
             class="btn-second mr-2"
             @click="emitirRestaurar"
           >
-            Restaurar
+            {{ $t('restaurar') }}
           </button>
   
           <button
             class="btn-cancel"
             @click="$emit('cancelar')"
           >
-            Cancel·lar
+            {{ $t('cancel') }}
           </button>
         </div>
       </div>

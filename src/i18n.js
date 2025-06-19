@@ -145,6 +145,9 @@ const messages = {
       pesosPerPuntDeControl: 'Pesos per cada punt de control',
       eliminarCriteri: 'Eliminar criteri',
       actualizarCriterio: 'Actualitzar criteri',
+      editarNotaFinal: 'Editar nota final',
+      guardar: 'Desar',
+      restaurar:'Restaurar',
 
 
     },
@@ -294,7 +297,9 @@ const messages = {
       pesosPerPuntDeControl: 'Pesos para cada punto de control',
       eliminarCriteri: 'Eliminar criterio',
       actualizarCriterio: 'Actualizar criterio',
-
+      editarNotaFinal: 'Editar nota final',
+      guardar: 'Guardar',
+      restaurar:'Restaurar',
 
 
 
@@ -447,7 +452,9 @@ const messages = {
       pesosPerPuntDeControl: 'Weights for each checkpoint',
       eliminarCriteri: 'Delete criterion',
       actualizarCriterio: 'Update criterion',
-
+      editarNotaFinal: 'Edit final grade',
+      guardar: 'Save',
+      restaurar:'Restore',
 
 
 
