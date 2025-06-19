@@ -142,8 +142,9 @@ const messages = {
       },
       actualitzarArea: 'Actualitzar àrea',
       editarCriterio: 'Editar criteri',
-
-
+      pesosPerPuntDeControl: 'Pesos per cada punt de control',
+      eliminarCriteri: 'Eliminar criteri',
+      actualizarCriterio: 'Actualitzar criteri',
 
 
     },
@@ -290,6 +291,9 @@ const messages = {
       },
       actualitzarArea: 'Actualizar área',
       editarCriterio: 'Editar criterio',
+      pesosPerPuntDeControl: 'Pesos para cada punto de control',
+      eliminarCriteri: 'Eliminar criterio',
+      actualizarCriterio: 'Actualizar criterio',
 
 
 
@@ -440,6 +444,9 @@ const messages = {
       },
       actualitzarArea: 'Update area',
       editarCriterio: 'Edit criterion',
+      pesosPerPuntDeControl: 'Weights for each checkpoint',
+      eliminarCriteri: 'Delete criterion',
+      actualizarCriterio: 'Update criterion',
 
 
 

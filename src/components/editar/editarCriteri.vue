@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-[90%] mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow mt-8">
-    <h2 class="text-xl font-semibold text-gray-800">Editar Criteri</h2>
+    <h2 class="text-xl font-semibold text-gray-800">{{$t('editarCriterio')}}</h2>
     <form @submit.prevent="guardarCambios">
       <!-- Nombre del criterio -->
       <div class="mt-4">
@@ -38,7 +38,7 @@
 
       <!-- Pesos por punto de control -->
       <div v-if="criterio.puntosDeControl.length > 1" class="mt-4">
-        <h3 class="text-sm font-semibold text-gray-700">Pesos per cada Punt de Control</h3>
+        <h3 class="text-sm font-semibold text-gray-700">{{$t('pesosPerPuntDeControl')}}</h3>
         <div class="flex flex-row justify-center">
           <div
             v-for="punto in criterio.puntosDeControl.slice().sort((a, b) => a.puntoControlId - b.puntoControlId)"
@@ -62,13 +62,13 @@
       <!-- Botones -->
       <div class="mt-6 flex justify-end gap-2">
         <button type="button" @click="$emit('cerrar')" class="btn-cancel">
-          Cancel·lar
+          {{$t('cancel')}}
         </button>
         <button type="button" @click="mostrarConfirmacionEliminar" class="btn-delete">
-          Eliminar Criteri
+          {{$t('eliminarCriteri')}}
         </button>
         <button type="submit" class="btn-confirm">
-          Guardar Canvis
+          {{$t('actualizarCriterio')}}
         </button>
       </div>
     </form>
