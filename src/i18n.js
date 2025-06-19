@@ -110,7 +110,19 @@ const messages = {
       estadoTrabajo: 'Estat del treball',
       advertencia: 'Aquesta acció no es pot desfer.',
       confirmar: 'Sí',
-      obligatori:'Aquest camp és obligatori'
+      obligatori:'Aquest camp és obligatori',
+      rubrica: {
+        detailsTitle: 'Detalls de la Rúbrica',
+        name: 'Nom',
+        role: 'Rol',
+        criteriaTitle: 'Criteris i Punts de Control',
+        criteria: 'Criteris',
+        final: 'Final',
+        percentagePerPoint: 'Percentatge de cada punt de control',
+        addCriterion: 'Afegir Criteri'
+      },
+
+
     },
   
     es: {
@@ -223,7 +235,18 @@ const messages = {
       estadoTrabajo: 'Estado del trabajo',
       advertencia: 'Esta acción no se puede deshacer.',
       confirmar: 'Sí',
-      obligatori:'Este campo es obligatorio'
+      obligatori:'Este campo es obligatorio',
+      rubrica: {
+        detailsTitle: 'Detalles de la Rúbrica',
+        name: 'Nombre',
+        role: 'Rol',
+        criteriaTitle: 'Criterios y Puntos de Control',
+        criteria: 'Criterios',
+        final: 'Final',
+        percentagePerPoint: 'Porcentaje de cada punto de control',
+        addCriterion: 'Añadir Criterio'
+      }
+
 
     
 
@@ -339,7 +362,18 @@ const messages = {
       estadoTrabajo: 'Work status',
       advertencia: 'This action cannot be undone.',
       confirmar: 'Yes',
-      obligatori:'This field is required'
+      obligatori:'This field is required',
+      rubrica: {
+        detailsTitle: 'Rubric Details',
+        name: 'Name',
+        role: 'Role',
+        criteriaTitle: 'Criteria and Checkpoints',
+        criteria: 'Criteria',
+        final: 'Final',
+        percentagePerPoint: 'Percentage per checkpoint',
+        addCriterion: 'Add Criterion'
+      },
+
 
 
   
