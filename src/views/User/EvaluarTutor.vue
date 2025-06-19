@@ -17,7 +17,7 @@
         <table class="min-w-full border border-gray-300 mt-4">
           <thead>
             <tr class="bg-gray-100 text-base">
-              <th class="border px-4 py-2">Criterios</th>
+              <th class="border px-4 py-2">{{$t('criterios')}}</th>
               <template v-if="puntosDeControl.length > 1">
                 <th v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="border px-4 py-2" colspan="2">
                   {{ punto.puntoControlNombre}} <br />
@@ -28,8 +28,8 @@
             <tr class="bg-gray-100 text-xs">
               <th class="border px-4 py-2"></th>
               <template v-for="(puntoControl, index) in puntosDeControl" :key="index">
-                <th class="border px-4 py-2">Pes</th>
-                <th class="border px-4 py-2">Nota</th>
+                <th class="border px-4 py-2">{{$t('pes')}}</th>
+                <th class="border px-4 py-2">{{$t('nota')}}</th>
               </template>
               <th class="border px-4 py-2"></th>
             </tr>
@@ -66,7 +66,7 @@
           </tbody>
           <tfoot v-if="puntosDeControl.length > 1">
             <tr class="border bg-gray-50 text-center text-sm">
-              <td class="px-4 py-2 border">Percentatge de cada punto de control</td>
+              <td class="px-4 py-2 border">{{$t('rubrica.percentagePerPoint')}}</td>
               <td v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="px-4 py-2 border" colspan="2">
                 {{ punto.pesoPuntoControl }}%
               </td>
@@ -74,7 +74,7 @@
             </tr>
 
             <tr class="border bg-gray-50 text-center text-sm">
-              <td class="px-4 py-2 border">Nota numerica de cada punt de control</td>
+              <td class="px-4 py-2 border">{{$t('numericaPunt')}}</td>
               <td v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="px-4 py-2 border" colspan="2"
               :class="getNotaClase(notasFinales[punto.puntoControlId])"
               >
@@ -94,7 +94,7 @@
             </tr>
 
             <tr class="border bg-gray-50 text-center text-sm">
-              <td class="px-4 py-2 border">Nota alfanumerica de cada punt de control</td>
+              <td class="px-4 py-2 border">{{$t('alfanumericaPunt')}}</td>
               <td v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="px-4 py-2 border" colspan="2">
                 {{ notaAlfabetica(notasFinales[punto.puntoControlId]) }}
               </td>
@@ -106,7 +106,7 @@
 
       <!-- Observaciones del punto de control -->
       <div class="mt-4" v-for="punto in puntosDeControl" :key="punto.puntoControlId">
-        <label for="observaciones" class="block">Observacions i recomanacions del punt {{ punto.puntoControlNombre }}:</label>
+        <label for="observaciones" class="block">{{$t('observacionsPunt')}} {{ punto.puntoControlNombre }}:</label>
         <input 
           type="text" 
           id="observaciones"
@@ -119,21 +119,21 @@
             class="btn-confirm"
             @click="guardarEvaluacion(punto.puntoControlId)"
           >
-            Guardar avaluació del punt {{ punto.puntoControlNombre }}
+            {{$t('guardarPunt')}} {{ punto.puntoControlNombre }}
           </button>
         </div>
       </div>
 
       <div class="mt-6 flex justify-end">
           <button class="btn-second mx-4" @click="mostrarResumen = true">
-            Veure resumen
+            {{$t('resum')}}
           </button>
         
         <button
           class="btn-cancel"
           @click="$emit('cerrar')"
         >
-          Tancar
+          {{$t('tancar')}}
         </button>
       </div>
     </div>

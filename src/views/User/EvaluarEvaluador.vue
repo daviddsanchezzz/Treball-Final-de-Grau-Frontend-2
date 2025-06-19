@@ -13,8 +13,8 @@
       <table class="min-w-full border border-gray-300">
         <thead>
           <tr class="bg-gray-100 text-sm text-center">
-            <th class="border px-4 py-2">Criterios</th>
-            <th class="border px-4 py-2">Entrega final y defensa</th>
+            <th class="border px-4 py-2">{{$t('criterios')}}</th>
+            <th class="border px-4 py-2">{{$t('entraFinal')}}</th>
           </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@
         </tbody>
         <tfoot>
           <tr class="border bg-gray-50 text-center text-sm">
-            <td class="px-4 py-2 border font-bold">Nota Numerica Final</td>
+            <td class="px-4 py-2 border font-bold">{{$t('numericaFinal')}}</td>
             <td
               class="px-4 py-2 border font-bold"
               :class="getNotaClase(notaFinal)"
@@ -48,7 +48,7 @@
             </td>
           </tr>
           <tr class="border bg-gray-50 text-center text-sm">
-            <td class="px-4 py-2 border font-bold">Nota Alfabetica Final</td>
+            <td class="px-4 py-2 border font-bold">{{$t('alfanumericaFinal')}}</td>
             <td
               class="px-4 py-2 border font-bold"
             >
@@ -62,7 +62,7 @@
     <div class="my-4">
       <div class="flex items-center">
         <label for="matriculaHonor" class="mr-4 text-sm font-medium text-gray-700">
-          Marca aquesta casella si considera que el treball es mereix una Matricula d'Honor
+          {{$t('mh')}}
         </label>
         <input 
           type="checkbox" 
@@ -73,7 +73,7 @@
       </div>
           
       <div class="mt-4">
-        <label for="observaciones" class="block">Observacions i recomanacions:</label>
+        <label for="observaciones" class="block">{{$t('observacions')}}:</label>
         <input 
           type="text" 
           id="observaciones"
@@ -87,13 +87,13 @@
         class="btn-cancel"
         @click="$emit('cerrar')"
       >
-        Tancar
+        {{$t('tancar')}}
       </button>
         <button
           class="btn-confirm"
           @click="guardarEvaluacion"
         >
-          Guardar Avaluació
+        {{$t('guardarAvaluacio')}}
         </button>
       </div>
     </div>

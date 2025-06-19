@@ -163,7 +163,3 @@ const filteredAreas = computed(() => {
   })
 })
 </script>
-
-<style scoped>
-/* Espacio reservado para estilos adicionales si los necesitas */
-</style>

@@ -3,14 +3,14 @@
       <div id="pdf-content">
 
         <div class="text-xl font-semibold mb-4">
-          Resum de la rúbrica del Tutor
+          {{$t('resumTutor')}}
         </div>
     
         <div class="mt-6">
           <table class="min-w-full border border-gray-300">
             <thead>
               <tr class="bg-gray-100 text-base">
-                <th class="border px-4 py-2">Criteris</th>
+                <th class="border px-4 py-2">{{$t('criterios')}}</th>
                 <template v-if="puntosDeControl.length > 1">
                   <th v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="border px-4 py-2" colspan="2">
                     {{ punto.puntoControlNombre }}
@@ -21,8 +21,8 @@
               <tr class="bg-gray-100 text-xs">
                 <th class="border px-4 py-2"></th>
                 <template v-for="(puntoControl, index) in puntosDeControl" :key="index">
-                  <th class="border px-4 py-2">Pes</th>
-                  <th class="border px-4 py-2">Nota</th>
+                  <th class="border px-4 py-2">{{$t('pes')}}</th>
+                  <th class="border px-4 py-2">{{$t('nota')}}</th>
                 </template>
                 <th class="border px-4 py-2"></th>
               </tr>
@@ -47,7 +47,7 @@
             </tbody>
             <tfoot v-if="puntosDeControl.length > 1">
               <tr class="border bg-gray-50 text-center text-sm">
-                <td class="px-4 py-2 border">Percentatge de cada punt de control</td>
+                <td class="px-4 py-2 border">{{$t('rubrica.percentagePerPoint')}}</td>
                 <td v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="px-4 py-2 border" colspan="2">
                   {{ punto.pesoPuntoControl }}%
                 </td>
@@ -55,7 +55,7 @@
               </tr>
     
               <tr class="border bg-gray-50 text-center text-sm">
-                <td class="px-4 py-2 border">Nota numèrica de cada punt de control</td>
+                <td class="px-4 py-2 border">{{$t('numericaPunt')}}</td>
                 <td v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="px-4 py-2 border" colspan="2"
                 :class="getNotaClase(notasFinales[punto.puntoControlId])"
                 >
@@ -69,7 +69,7 @@
               </tr>
     
               <tr class="border bg-gray-50 text-center text-sm">
-                <td class="px-4 py-2 border">Nota alfanumèrica de cada punt de control</td>
+                <td class="px-4 py-2 border">{{$t('alfanumericaPunt')}}</td>
                 <td v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="px-4 py-2 border" colspan="2">
                   {{ notaAlfabetica(notasFinales[punto.puntoControlId]) }}
                 </td>
@@ -82,13 +82,13 @@
         </div>
     
         <div v-for="punto in puntosDeControl" :key="punto.puntoControlId" class="mt-4">
-          <h3 class="font-medium">Observacions per al punt de control {{ punto.puntoControlNombre }}:</h3>
+          <h3 class="font-medium">{{$t('observacionsPunt')}} {{ punto.puntoControlNombre }}:</h3>
           <p class="text-xs">{{ observaciones[punto.puntoControlId] }}</p>
         </div>
 
         <div class="mt-8 mb-4" v-if="evaluadores.length > 0">
           <div class="text-xl font-semibold">
-            Resum de les rúbriques dels Evaluadors
+            {{$t('resumEvaluador')}}
 
           </div>
 
@@ -97,12 +97,11 @@
             <table class="min-w-full border border-gray-300">
               <thead>
                 <tr class="bg-gray-100 text-sm text-center">
-                  <th class="border px-4 py-2">Criteris</th>
+                  <th class="border px-4 py-2">{{$t('criterios')}}</th>
                   <template v-for="(evaluador, index) in evaluadores" :key="evaluador.evaluadorId">
-                    <th class="border px-4 py-2">Avaluador {{index+1}}</th>
+                    <th class="border px-4 py-2">{{$t('evaluador')}} {{index+1}}</th>
                   </template>
                   <th class="border px-4 py-2">Final</th>
-
                 </tr>
               </thead>
               <tbody>
@@ -120,7 +119,7 @@
                 </tr>
             
                 <tr class="border bg-gray-50 text-center text-sm">
-                  <td class="px-4 py-2 border font-semibold">Nota numerica final</td>
+                  <td class="px-4 py-2 border font-semibold">{{$t('numericaFinal')}}</td>
                   <template v-for="evaluador in evaluadores" :key="evaluador.evaluadorId">
                     <td class="border px-4 py-2"
                       :class="getNotaClase(evaluador.notaFinal)"
@@ -133,7 +132,7 @@
 
                 </tr>
                 <tr class="border bg-gray-50 text-center text-sm">
-                  <td class="px-4 py-2 border font-semibold">Nota alfabetica final</td>
+                  <td class="px-4 py-2 border font-semibold">{{$t('alfanumericaFinal')}}</td>
                   <template v-for="evaluador in evaluadores" :key="evaluador.evaluadorId">
                     <td class="border px-4 py-2">  {{ notaAlfabetica(evaluador.notaFinal) }}</td>
                   </template>
@@ -141,7 +140,7 @@
                 </tr>
 
                 <tr class="border bg-gray-50 text-center text-sm">
-                  <td class="px-4 py-2 border font-semibold">Treball propost per matricula d'honor</td>
+                  <td class="px-4 py-2 border font-semibold">{{$t('proposatMh')}}</td>
                   <template v-for="evaluador in evaluadores" :key="evaluador.evaluadorId">
                     <td class="border px-4 py-2">  {{ evaluador.matricula ? 'Sí' : 'No' }}</td>
                   </template>
@@ -154,7 +153,7 @@
       
 
           <div v-for="(evaluador, index) in evaluadores" :key="evaluador.evaluadorId" class="mt-4">
-            <h3 class="font-medium">Observacions de l'avaluador {{ index+1 }}:</h3>
+            <h3 class="font-medium">{{$t('observacionsAv')}} {{ index+1 }}:</h3>
             <p class="text-xs"> {{evaluador.observaciones}}</p>
           </div>
 
@@ -162,21 +161,21 @@
             <table class="min-w-full border border-gray-300">
               <thead>
                 <tr class="bg-gray-100 text-sm text-center">
-                  <td class="px-4 py-2 border font-bold">Avaluació Final</td>
-                  <td class="px-4 py-2 border font-bold">Percentatge</td>
-                  <td class="px-4 py-2 border font-bold">Nota</td>
+                  <td class="px-4 py-2 border font-bold">{{$t('avFinal')}}</td>
+                  <td class="px-4 py-2 border font-bold">{{$t('percentatge')}}</td>
+                  <td class="px-4 py-2 border font-bold">{{$t('nota')}}</td>
                 </tr>
               </thead>
               <tbody class="text-center text-sm" >
                 <tr>
-                  <td class="px-4 py-2 border">Avaluació Tutor</td>
+                  <td class="px-4 py-2 border">{{$t('avTutor')}}</td>
                   <td class="px-4 py-2 border">{{ percentatgeFinalTutor }} %</td>
                   <td class="px-4 py-2 border"
                     :class="getNotaClase(localNotaFinal)"
                   >{{localNotaFinal}}</td>
                 </tr>
                 <tr>
-                  <td class="px-4 py-2 border">Avaluació Avaluadors</td>
+                  <td class="px-4 py-2 border">{{$t('avAvaluador')}}</td>
                   <td class="px-4 py-2 border"> {{percentatgeFinalAvaluadors}} % </td>
                   <td class="px-4 py-2 border"
                     :class="getNotaClase(notaFinalEvaluadores)"
@@ -184,7 +183,7 @@
                 </tr>
               
                 <tr class="border bg-gray-50 text-center text-sm font-semibold">
-                  <td class="px-4 py-2 border">Nota final del treball</td>
+                  <td class="px-4 py-2 border">{{$t('notaTreballFinal')}}</td>
                   <td class="px-4 py-2 border">100%</td>
                   <td class="px-4 py-2 border"
                   :class="getNotaClase(notaFinalTrabajo)"
@@ -203,20 +202,20 @@
             class="btn-second mx-4"
             @click="exportarAPdf()"
         >
-            Exportar a PDF
+            {{$t('exportar')}}
         </button>   
         <button
             class="btn-confirm mr-4"
             @click="guardarEvaluacionFinal()"
             v-if="evaluadores.length > 0"
         >
-            Guardar avaluació final
+             {{$t('guardarFinal')}}
         </button>
         <button
           class="btn-cancel"
           @click="$emit('cerrar')"
         >
-          Tancar
+          {{$t('tancar')}}
         </button>
       </div>
     </div>
