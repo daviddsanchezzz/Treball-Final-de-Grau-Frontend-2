@@ -148,6 +148,9 @@ const messages = {
       editarNotaFinal: 'Editar nota final',
       guardar: 'Desar',
       restaurar:'Restaurar',
+      editarPuntControl: 'Editar punt de control',
+      nomPuntControl:'Nom del punt de control',
+      pes:'Pes',
 
 
     },
@@ -300,7 +303,9 @@ const messages = {
       editarNotaFinal: 'Editar nota final',
       guardar: 'Guardar',
       restaurar:'Restaurar',
-
+      editarPuntControl: 'Editar punto de control',
+      nomPuntControl:'Nombre del punto de control',
+      pes:'Peso',
 
 
     
@@ -455,7 +460,9 @@ const messages = {
       editarNotaFinal: 'Edit final grade',
       guardar: 'Save',
       restaurar:'Restore',
-
+      editarPuntControl: 'Edit checkpoint',
+      nomPuntControl:'Checkpoint name',
+      pes:'Weight',
 
 
 

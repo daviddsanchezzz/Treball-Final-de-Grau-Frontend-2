@@ -1,10 +1,10 @@
 <template>
     <div class="max-w-[90%] mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow mt-8">
-      <h2 class="text-xl font-semibold text-gray-800">Editar Punt de Control</h2>
+      <h2 class="text-xl font-semibold text-gray-800"> {{ $t('editarPuntControl') }}</h2>
       <form @submit.prevent="guardarCambios">
         <!-- Nombre -->
         <div class="mt-4">
-          <label for="nombre" class="block text-sm font-semibold text-gray-700">Nom del Punt de Control</label>
+          <label for="nombre" class="block text-sm font-semibold text-gray-700">{{ $t('nomPuntControl') }}</label>
           <input
             v-model="nombre"
             type="text"
@@ -16,7 +16,7 @@
   
         <!-- Peso -->
         <div class="mt-4">
-          <label for="peso" class="block text-sm font-semibold text-gray-700">Pes</label>
+          <label for="peso" class="block text-sm font-semibold text-gray-700">{{ $t('pes') }}</label>
           <input
             v-model.number="peso"
             type="number"
@@ -29,10 +29,10 @@
         <!-- Botones -->
         <div class="mt-6 flex justify-end gap-2">
           <button type="button" @click="$emit('cerrar')" class="btn-cancel">
-            Cancel·lar
+            {{ $t('cancel') }}
           </button>
           <button type="submit" class="btn-confirm">
-            Guardar Canvis
+            {{ $t('guardar') }}
           </button>
         </div>
       </form>
