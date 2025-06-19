@@ -19,7 +19,7 @@
         <div class="mb-4">
           <label for="rol" class="block text-sm font-medium text-gray-700">  {{ $t('rol') }}</label>
           <select v-model="rubrica.rol.id" id="rol" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-            <option v-for="rol in roles" :key="rol.id" :value="rol.id">{{ rol.nombre }}</option>
+            <option v-for="rol in roles" :key="rol.id" :value="rol.id">{{ $t(rol.nombre) }}</option>
           </select>
         </div>
   
@@ -29,7 +29,6 @@
             {{ $t('cancel') }}
           </button>
           <button type="submit" class="btn-confirm">
-            Actualitzar Rúbrica
             {{ $t('actualitzarRubrica') }}
 
           </button>
