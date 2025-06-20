@@ -73,7 +73,7 @@
       </div>
           
       <div class="mt-4">
-        <label for="observaciones" class="block">{{$t('observacions')}}:</label>
+        <label for="observaciones" class="block">{{$t('observacions')}}</label>
         <input 
           type="text" 
           id="observaciones"
