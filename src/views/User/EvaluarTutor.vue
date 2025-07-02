@@ -263,7 +263,7 @@ export default {
         });
 
         this.puntosDeControl = Object.values(puntosUnicos);
-
+        this.puntosDeControl.sort((a, b) => a.puntoControlId - b.puntoControlId);
         
         const evaluacionesRes = await api.get(`/${this.usuarioId}/evaluaciones/${this.trabajoId}/tutor`);
 
