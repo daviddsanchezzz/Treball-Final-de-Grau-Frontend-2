@@ -46,7 +46,7 @@
                   }}
                 </td>
                 <td class="border px-2 py-2"
-                :class="getNotaClase(notas[punto.puntoControlId][criterio.criterioId])"
+                :class="notas[punto.puntoControlId] ? getNotaClase(notas[punto.puntoControlId][criterio.criterioId]) : ''"
                 >
                   <input
                     v-if="pesos[punto.puntoControlId][criterio.criterioId] > 0"
