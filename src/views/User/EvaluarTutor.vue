@@ -277,6 +277,11 @@ export default {
           }
           this.observaciones[evaluacion.puntoControlId] = evaluacion.observacionPC;
           this.notasFinales[evaluacion.puntoControlId] = evaluacion.notaFinalPC;
+
+          console.log("Evaluación:", evaluacion);
+          console.log("evaluacion.puntoControlId:", evaluacion.puntoControlId);
+          console.log("evaluacion.puntoControl.criterios:", evaluacion.puntoControl.criterios);
+
           evaluacion.puntoControl.criterios.forEach((criterio) => {
             const puntoId = evaluacion.puntoControlId;
             const criterioId = criterio.criterioId;
@@ -290,6 +295,10 @@ export default {
             } else {
               this.notas[puntoId][criterioId] = null;
             }
+
+              console.log("criterio:", criterio);
+  console.log("criterio.criterioId:", criterio.criterioId);
+  console.log("criterio.notas:", criterio.notas);
           });
         });
 
