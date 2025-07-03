@@ -278,14 +278,18 @@ export default {
           this.observaciones[evaluacion.puntoControlId] = evaluacion.observacionPC;
           this.notasFinales[evaluacion.puntoControlId] = evaluacion.notaFinalPC;
           evaluacion.puntoControl.criterios.forEach((criterio) => {
-            if (criterio.notas.length > 0) {
-              this.notas[criterio.puntoControlId][criterio.criterioId] = criterio.notas[0].nota;
-            }
-            else{
-              this.notas[criterio.puntoControlId][criterio.criterioId] = null;
-            }
-            
+            const puntoId = evaluacion.puntoControlId;
+            const criterioId = criterio.criterioId;
 
+            if (!this.notas[puntoId]) {
+              this.notas[puntoId] = {};
+            }
+
+            if (criterio.notas && criterio.notas.length > 0) {
+              this.notas[puntoId][criterioId] = criterio.notas[0].nota;
+            } else {
+              this.notas[puntoId][criterioId] = null;
+            }
           });
         });
 
