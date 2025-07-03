@@ -273,7 +273,7 @@ export default {
         // Iterar sobre las evaluaciones y asignar las notas a la estructura this.notas
         evaluacionesRes.data.forEach((evaluacion) => {
           if (!this.notas[evaluacion.puntoControlId]) {
-              this.notas[evaluacion.puntoControlId] = {};
+            this.notas[evaluacion.puntoControlId] = {};
           }
           this.observaciones[evaluacion.puntoControlId] = evaluacion.observacionPC;
           this.notasFinales[evaluacion.puntoControlId] = evaluacion.notaFinalPC;
@@ -296,13 +296,26 @@ export default {
               this.notas[puntoId][criterioId] = null;
             }
 
-              console.log("criterio:", criterio);
-  console.log("criterio.criterioId:", criterio.criterioId);
-  console.log("criterio.notas:", criterio.notas);
+            console.log("criterio:", criterio);
+            console.log("criterio.criterioId:", criterio.criterioId);
+            console.log("criterio.notas:", criterio.notas);
           });
         });
 
-        this.datosCargados=true;
+        // Asegurar que todas las combinaciones puntoControlId + criterioId existen en this.notas
+        this.puntosDeControl.forEach(punto => {
+          if (!this.notas[punto.puntoControlId]) {
+            this.notas[punto.puntoControlId] = {};
+          }
+
+          this.criterios.forEach(criterio => {
+            if (this.notas[punto.puntoControlId][criterio.criterioId] === undefined) {
+              this.notas[punto.puntoControlId][criterio.criterioId] = null;
+            }
+          });
+        });
+
+        this.datosCargados = true;
       } catch (error) {
         console.error("Error al cargar datos de evaluación:", error);
       }
